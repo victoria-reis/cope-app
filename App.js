@@ -1,5 +1,6 @@
 // modules
 import React from "react";
+import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -10,6 +11,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import WelcomeScreen from "./src/screens/WelcomeScreen";
 import SessionsMenuScreen from "./src/screens/PrevSessionsScreen";
 import NewSessionScreen from "./src/screens/NewSessionScreen";
+import LoadingScreen from "./src/screens/LoadingScreen";
 
 const Stack = createNativeStackNavigator();
 
@@ -26,21 +28,21 @@ const AppNavigator = () => {
 };
 
 const App = () => {
+	const [logoTimer, setLogoTimer] = useState(true);
+
+	useEffect(() => {
+		setTimeout(() => {
+			setLogoTimer(false);
+			console.log("first timer");
+		}, 10000);
+	}, []);
+
 	return (
 		<>
-			<AppNavigator />
+			{logoTimer ? <LoadingScreen /> : <AppNavigator />}
 			<StatusBar style="auto" />
 		</>
 	);
 };
-
-// const styles = StyleSheet.create({
-// 	container: {
-// 		flex: 1,
-// 		backgroundColor: "#fff",
-// 		alignItems: "center",
-// 		justifyContent: "center",
-// 	},
-// });
 
 export default App;

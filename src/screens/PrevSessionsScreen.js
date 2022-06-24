@@ -7,8 +7,10 @@ import SessionCard from "../components/SessionCard";
 
 const SessionsMenuScreen = () => {
 	return (
-		<SafeAreaView style={{ flex: 1, alignItems: "center" }}>
-			<Text>Previous Sessions</Text>
+		<SafeAreaView style={{ flex: 1 }}>
+			<Text style={{ fontSize: 30, fontWeight: "bold" }}>
+				Previous Sessions
+			</Text>
 			<FlatList
 				data={[{ name: 1 }, { name: 2 }]}
 				renderItem={() => <SessionCard />}

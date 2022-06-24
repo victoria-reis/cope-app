@@ -1,5 +1,6 @@
 import React from "react";
 import { View, Text, Button } from "react-native";
+import { Card } from "react-native-paper";
 
 const SessionCard = () => {
 	const data = [
@@ -24,13 +25,32 @@ const SessionCard = () => {
 	];
 
 	return (
-		<View style={{ backgroundColor: "red" }}>
-			<Text>{data[0].date}</Text>
-			<View>
-				<Text>{data[0].anxietyRating}</Text>
-				<Text>{data[0].category}</Text>
+		<View style={{ margin: 10 }}>
+			<Text style={{ fontSize: 20, fontWeight: "bold" }}>{data[0].date}</Text>
+			<View
+				style={{
+					backgroundColor: "lightgrey",
+					flexDirection: "row",
+					justifyContent: "space-around",
+					alignItems: "center",
+					borderRadius: 25,
+					borderColor: "black",
+					borderWidth: 2,
+				}}
+				elevation={5}
+			>
+				<View style={{ alignItems: "center" }}>
+					<Text style={{ fontSize: 20, fontWeight: "bold" }}>Feeling</Text>
+					<Text style={{ fontSize: 30 }}>{data[0].anxietyRating}</Text>
+				</View>
+				<View style={{ alignItems: "center" }}>
+					<Text style={{ fontSize: 20, fontWeight: "bold" }}>
+						Anxious about:
+					</Text>
+					<Text style={{ fontSize: 25 }}>{data[0].category}</Text>
+				</View>
+				<Button title=">" style={{ width: 30 }} />
 			</View>
-			<Button title=">" />
 		</View>
 	);
 };
