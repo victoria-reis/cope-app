@@ -9,7 +9,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // screens
 import HomeScreen from "./src/screens/HomeScreen";
-import SessionsMenuScreen from "./src/screens/PrevSessionsScreen";
+import SessionsMenuScreen from "./src/screens/SessionMenuScreen";
 import NewSessionScreen from "./src/screens/NewSessionScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
 
