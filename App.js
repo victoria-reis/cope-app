@@ -8,18 +8,19 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 // screens
-import WelcomeScreen from "./src/screens/WelcomeScreen";
+import HomeScreen from "./src/screens/HomeScreen";
 import SessionsMenuScreen from "./src/screens/PrevSessionsScreen";
 import NewSessionScreen from "./src/screens/NewSessionScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
 
+// app navigation
 const Stack = createNativeStackNavigator();
 
 const AppNavigator = () => {
 	return (
 		<NavigationContainer>
-			<Stack.Navigator initialRouteName="Welcome">
-				<Stack.Screen name="Welcome" component={WelcomeScreen} />
+			<Stack.Navigator initialRouteName="Home">
+				<Stack.Screen name="Home" component={HomeScreen} />
 				<Stack.Screen name="Sessions" component={SessionsMenuScreen} />
 				<Stack.Screen name="New Session" component={NewSessionScreen} />
 			</Stack.Navigator>
@@ -28,13 +29,13 @@ const AppNavigator = () => {
 };
 
 const App = () => {
+	// state for loading page timer (app name and welcome message)
 	const [logoTimer, setLogoTimer] = useState(true);
-
+	// as soon as the app runs, loading screen appears for 6s with app name and message
 	useEffect(() => {
 		setTimeout(() => {
 			setLogoTimer(false);
-			console.log("first timer");
-		}, 10000);
+		}, 6000);
 	}, []);
 
 	return (

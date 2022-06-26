@@ -2,19 +2,20 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 
+// initial screen
 const LoadingScreen = () => {
-	const [welcomeTimer, setWelcomeTimer] = useState(false);
+	// state for welcome message timer
+	const [welcomeMsgTimer, setWelcomeMsgTimer] = useState(false);
 
 	useEffect(() => {
 		setTimeout(() => {
-			console.log("timer from loading screen");
-			setWelcomeTimer(true);
-		}, 5000);
+			setWelcomeMsgTimer(true);
+		}, 3000);
 	}, []);
 
 	return (
 		<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-			{!welcomeTimer ? (
+			{!welcomeMsgTimer ? (
 				<Text style={{ fontSize: 50, fontWeight: "bold" }}>Therapu</Text>
 			) : (
 				<Text style={{ fontSize: 50, fontWeight: "bold" }}>

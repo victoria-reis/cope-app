@@ -5,6 +5,7 @@ import { SafeAreaView, View, Text, FlatList } from "react-native";
 // components
 import SessionCard from "../components/SessionCard";
 
+// previous sessions screen, where user will be able to see list of old sessions
 const SessionsMenuScreen = () => {
 	return (
 		<SafeAreaView style={{ flex: 1 }}>

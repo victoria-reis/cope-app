@@ -2,6 +2,7 @@ import React from "react";
 import { View, Text, Button } from "react-native";
 import { Card } from "react-native-paper";
 
+// component that displays info about every old session
 const SessionCard = () => {
 	const data = [
 		{
