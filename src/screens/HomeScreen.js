@@ -1,31 +1,37 @@
 import React from "react";
-import { SafeAreaView, View, Text, Button } from "react-native";
+import { SafeAreaView, Text, Platform, StatusBar } from "react-native";
+import styled from "styled-components";
 
 // home screen
 const HomeScreen = ({ navigation }) => {
 	return (
-		<SafeAreaView style={{ flex: 1, alignItems: "center" }}>
-			<Text>Good Morning!</Text>
-			<Text>
+		<ScreenContainer
+			style={Platform.OS ? { marginTop: StatusBar.currentHeight } : null}
+		>
+			<Greeting1>Hello,</Greeting1>
+			<Greeting2>
 				Lorem ipsum dolor sit amet consectetur adipisicing elit. Minus nulla
-				harum, quisquam ad voluptates optio ducimus aut cupiditate ea et?
-			</Text>
-			{/* button to attend new session */}
-			<Button
-				title="Attend a session"
-				onPress={() => {
-					navigation.navigate("New Session");
-				}}
-			/>
-			{/* button to view previous sessions */}
-			<Button
-				title="View sessions"
-				onPress={() => {
-					navigation.navigate("Sessions");
-				}}
-			/>
-		</SafeAreaView>
+				harum?
+			</Greeting2>
+		</ScreenContainer>
 	);
 };
+
+// styles
+const ScreenContainer = styled(SafeAreaView)`
+	flex: 1;
+	padding: 20px;
+`;
+
+const Greeting1 = styled(Text)`
+	font-size: 40px;
+	font-weight: bold;
+	margin-top: 20px;
+`;
+
+const Greeting2 = styled(Text)`
+	font-size: 25px;
+	margin-top: 20px;
+`;
 
 export default HomeScreen;

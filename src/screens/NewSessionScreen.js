@@ -1,24 +1,25 @@
 // modules
 import React from "react";
-import { SafeAreaView, View, Text } from "react-native";
+import { SafeAreaView, View, Text, Platform, StatusBar } from "react-native";
 import { useState, useEffect } from "react";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import styled from "styled-components";
 
 // components
 import AnxietyRating from "../components/AnxietyRating";
 import AnxietyCategories from "../components/AnxietyCategories";
-import TypeOrRecord from "../components/TypeOrRecord";
+import VoiceRecording from "../components/VoiceRecording";
 
 // new session screen
-const NewSessionScreen = () => {
+const NewSessionScreen = ({ navigation }) => {
 	const [showRating, setShowRating] = useState(true);
 	const [feeling, setFeeling] = useState("");
 	const [showCategories, setShowCategories] = useState(false);
 	const [category, setCategory] = useState("");
 
 	return (
-		<SafeAreaView style={{ flex: 1, alignItems: "center" }}>
+		<ScreenContainer
+			style={Platform.OS ? { marginTop: StatusBar.currentHeight } : null}
+		>
 			{showRating ? (
 				//where user will rate their anxiety
 				<AnxietyRating
@@ -36,10 +37,16 @@ const NewSessionScreen = () => {
 				/>
 			) : !showRating && !showCategories ? (
 				// where user will choose if they want to record voice or type
-				<TypeOrRecord />
+				<VoiceRecording />
 			) : null}
-		</SafeAreaView>
+		</ScreenContainer>
 	);
 };
+
+// styles
+const ScreenContainer = styled(SafeAreaView)`
+	flex: 1;
+	padding: 20px;
+`;
 
 export default NewSessionScreen;

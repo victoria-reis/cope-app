@@ -1,6 +1,8 @@
+// modules
 import React from "react";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
+import styled from "styled-components";
 
 // initial screen
 const LoadingScreen = () => {
@@ -14,16 +16,33 @@ const LoadingScreen = () => {
 	}, []);
 
 	return (
-		<View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+		<LoadingPageContainer>
 			{!welcomeMsgTimer ? (
-				<Text style={{ fontSize: 50, fontWeight: "bold" }}>Therapu</Text>
+				<AppName>Therapu</AppName>
 			) : (
-				<Text style={{ fontSize: 50, fontWeight: "bold" }}>
-					Everything is going to be okay!
-				</Text>
+				<WelcomeMessage>"Everything is going to be okay."</WelcomeMessage>
 			)}
-		</View>
+		</LoadingPageContainer>
 	);
 };
+
+// styles
+const LoadingPageContainer = styled(View)`
+	flex: 1;
+	align-items: center;
+	justify-content: center;
+`;
+
+const AppName = styled(Text)`
+	font-size: 50px;
+	font-weight: bold;
+`;
+
+const WelcomeMessage = styled(Text)`
+	font-size: 40px;
+	font-weight: bold;
+	max-width: 75%;
+	text-align: center;
+`;
 
 export default LoadingScreen;

@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, TouchableOpacity } from "react-native";
+import styled from "styled-components";
 
 // where user will rate their anxiety
 const AnxietyRating = ({
@@ -8,8 +9,8 @@ const AnxietyRating = ({
 	setShowRating,
 	setShowCategories,
 }) => {
-	const handlePress = () => {
-		console.log("feeling has been selected");
+	const handlePress = (feeling) => {
+		setFeeling(feeling);
 		setShowRating(false);
 		setShowCategories(true);
 	};
@@ -17,58 +18,63 @@ const AnxietyRating = ({
 	return (
 		<>
 			<View>
-				<Text style={{ fontSize: 20, fontWeight: "bold" }}>
-					How anxious are you feeling now?
-				</Text>
+				<Heading>How anxious are you feeling now?</Heading>
 			</View>
-			<View
-				style={{
-					width: "100%",
-					padding: 20,
-					flexDirection: "row",
-					justifyContent: "space-evenly",
-				}}
-			>
-				<View style={{ alignItems: "center", width: "33%" }}>
-					<Text style={{ fontSize: 18, fontWeight: "bold" }}>Good</Text>
-					<Text
-						style={{ fontSize: 60 }}
-						onPress={() => {
-							console.log("good");
-							setFeeling("good");
-						}}
-					>
-						🙂
-					</Text>
-				</View>
-				<View style={{ alignItems: "center", width: "33%" }}>
-					<Text style={{ fontSize: 18, fontWeight: "bold" }}>Anxious</Text>
-					<Text
-						style={{ fontSize: 60 }}
-						onPress={() => {
-							console.log("anxious");
-							setFeeling("anxious");
-						}}
-					>
-						😐
-					</Text>
-				</View>
-				<View style={{ alignItems: "center", width: "33%" }}>
-					<Text style={{ fontSize: 18, fontWeight: "bold" }}>Very Anxious</Text>
-					<Text
-						style={{ fontSize: 60 }}
-						onPress={() => {
-							console.log("very anxious");
-							setFeeling("very anxious");
-						}}
-					>
-						😩
-					</Text>
-				</View>
-			</View>
-			{feeling ? <Button title="Continue" onPress={handlePress} /> : null}
+			<RatingContainer>
+				<MoodButton
+					onPress={() => {
+						handlePress("good");
+					}}
+				>
+					<MoodTitle>Good</MoodTitle>
+					<MoodIcon>🙂</MoodIcon>
+				</MoodButton>
+				<MoodButton
+					onPress={() => {
+						handlePress("anxious");
+					}}
+				>
+					<MoodTitle>Anxious</MoodTitle>
+					<MoodIcon>😐</MoodIcon>
+				</MoodButton>
+				<MoodButton
+					onPress={() => {
+						handlePress("very anxious");
+					}}
+				>
+					<MoodTitle>Very Anxious</MoodTitle>
+					<MoodIcon>☹️</MoodIcon>
+				</MoodButton>
+			</RatingContainer>
+			{/* {feeling ? <Button title="Continue" onPress={handlePress} /> : null} */}
 		</>
 	);
 };
+
+// styles
+const Heading = styled(Text)`
+	font-size: 30px;
+	font-weight: bold;
+`;
+
+const RatingContainer = styled(View)`
+	flex: 1;
+	flex-direction: row;
+	align-items: center;
+`;
+
+const MoodButton = styled(TouchableOpacity)`
+	align-items: center;
+	width: 33%;
+`;
+
+const MoodTitle = styled(Text)`
+	font-size: 15px;
+	font-weight: bold;
+`;
+
+const MoodIcon = styled(Text)`
+	font-size: 80px;
+`;
 
 export default AnxietyRating;
