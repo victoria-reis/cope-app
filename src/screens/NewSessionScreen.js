@@ -73,12 +73,11 @@ const NewSessionScreen = ({ navigation }) => {
 // styles
 const ScreenContainer = styled(SafeAreaView)`
 	flex: 1;
-	padding: 20px;
+	margin: 20px;
 `;
 
 const CloseButton = styled(TouchableOpacity)`
-	position: absolute;
-	right: 20px;
+	align-self: flex-end;
 `;
 
 export default NewSessionScreen;

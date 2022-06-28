@@ -19,7 +19,14 @@ const CloseModal = ({
 		setModalVisible(false);
 	};
 	return (
-		<Modal animationType="slide" transparent={true} visible={modalVisible}>
+		<Modal
+			animationType="slide"
+			transparent={true}
+			visible={modalVisible}
+			onRequestClose={() => {
+				setModalVisible(false);
+			}}
+		>
 			<ModalContainer>
 				<ModalBox
 					style={{
