@@ -32,10 +32,11 @@ const SessionsMenuScreen = () => {
 // styles
 const ScreenContainer = styled(SafeAreaView)`
 	flex: 1;
-	padding: 20px;
+	margin: 20px;
 `;
 
 const Heading = styled(Text)`
+	margin-top: 20px;
 	font-size: 30px;
 	font-weight: bold;
 `;

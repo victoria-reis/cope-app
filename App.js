@@ -14,21 +14,6 @@ import SessionsMenuScreen from "./src/screens/SessionsMenuScreen";
 import NewSessionScreen from "./src/screens/NewSessionScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
 
-// app navigation
-// const Stack = createNativeStackNavigator();
-
-// const AppNavigator = () => {
-// 	return (
-// 		<NavigationContainer>
-// 			<Stack.Navigator initialRouteName="Home">
-// 				<Stack.Screen name="Home" component={HomeScreen} />
-// 				<Stack.Screen name="Sessions" component={SessionsMenuScreen} />
-// 				<Stack.Screen name="New Session" component={NewSessionScreen} />
-// 			</Stack.Navigator>
-// 		</NavigationContainer>
-// 	);
-// };
-
 const Tab = createBottomTabNavigator();
 
 const AppNavigator = () => {
@@ -42,7 +27,7 @@ const AppNavigator = () => {
 					name="Home"
 					component={HomeScreen}
 					options={{
-						tabBarButton: (props) => null,
+						tabBarIcon: () => <AntDesign name="home" size={25} />,
 					}}
 				/>
 				<Tab.Screen

@@ -118,7 +118,6 @@ const AnxietyCategories = ({ category, setCategory, setShowCategories }) => {
 					</CategoryIcon>
 				</CategoryButton>
 			</CategoriesContainer>
-			{category ? <Button title="Continue" onPress={handlePress} /> : null}
 		</>
 	);
 };

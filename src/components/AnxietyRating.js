@@ -46,7 +46,6 @@ const AnxietyRating = ({
 					<MoodIcon>☹️</MoodIcon>
 				</MoodButton>
 			</RatingContainer>
-			{/* {feeling ? <Button title="Continue" onPress={handlePress} /> : null} */}
 		</>
 	);
 };

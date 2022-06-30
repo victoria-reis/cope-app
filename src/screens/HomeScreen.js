@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }) => {
 // styles
 const ScreenContainer = styled(SafeAreaView)`
 	flex: 1;
-	padding: 20px;
+	margin: 20px;
 `;
 
 const Greeting1 = styled(Text)`
