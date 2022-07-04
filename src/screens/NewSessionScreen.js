@@ -39,6 +39,7 @@ const NewSessionScreen = ({ navigation }) => {
 					<AntDesign name="close" size={30} color="black" />
 				</Text>
 			</CloseButton>
+			{/*the cross sign to close the session */}
 
 			<CloseModal
 				modalVisible={modalVisible}
@@ -46,6 +47,7 @@ const NewSessionScreen = ({ navigation }) => {
 				navigation={navigation}
 				setShowRating={setShowRating}
 			/>
+			{/* here trying to pass down the state values as props to CloseModal component  */}
 
 			{showRating ? (
 				//where user will rate their anxiety
@@ -55,16 +57,21 @@ const NewSessionScreen = ({ navigation }) => {
 					setShowRating={setShowRating}
 					setShowCategories={setShowCategories}
 				/>
-			) : showCategories ? (
+			) : //here we tried to pass down feeling, setFeeling as props to the AnxietyRating component as props
+
+			// Inside the AnxietyRating component we will set showRating to false to so the showCategories run
+
+			showCategories ? (
 				// where user will choose what they are anxious about
 				<AnxietyCategories
 					category={category}
 					setCategory={setCategory}
 					setShowCategories={setShowCategories}
 				/>
-			) : !showRating && !showCategories ? (
+			) : // After ruunning the AnxietyCategories we will set shoCategories to false also inside the AnxietyCategories component
+			!showRating && !showCategories ? (
 				// where user will record voice
-				<VoiceRecording />
+				<VoiceRecording navigation={navigation} />
 			) : null}
 		</ScreenContainer>
 	);
