@@ -3,6 +3,10 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import styled from "styled-components";
+// import {
+// 	useFonts,
+// 	PlayfairDisplay_700Bold,
+// } from "@expo-google-fonts/playfair-display";
 
 // initial screen
 const LoadingScreen = () => {
@@ -18,7 +22,7 @@ const LoadingScreen = () => {
 	return (
 		<LoadingPageContainer>
 			{!welcomeMsgTimer ? (
-				<AppName>Therapu</AppName>
+				<AppName>Cope</AppName>
 			) : (
 				<WelcomeMessage>"Everything is going to be okay."</WelcomeMessage>
 			)}

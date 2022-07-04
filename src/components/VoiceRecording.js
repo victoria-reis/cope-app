@@ -1,18 +1,18 @@
 import React from "react";
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, Button } from "react-native";
 import styled from "styled-components";
 import { Audio } from "expo-av";
 import { Entypo, FontAwesome, AntDesign } from "@expo/vector-icons";
 //import * as Sharing from 'expo-sharing';
 
 // where user will record voice
-const VoiceRecording = () => {
+const VoiceRecording = ({ navigation }) => {
 	const [recording, setRecording] = useState();
 	const [recordings, setRecordings] = useState([]);
 	const [message, setMessage] = useState("");
 
-	async function startRecording() {
+	const startRecording = async () => {
 		try {
 			const permission = await Audio.requestPermissionsAsync();
 
@@ -33,9 +33,9 @@ const VoiceRecording = () => {
 		} catch (err) {
 			console.error("Failed to start recording", err);
 		}
-	}
+	};
 
-	async function stopRecording() {
+	const stopRecording = async () => {
 		setRecording(undefined);
 		await recording.stopAndUnloadAsync();
 
@@ -48,33 +48,37 @@ const VoiceRecording = () => {
 		});
 
 		setRecordings(updatedRecordings);
-	}
+	};
 
-	function getDurationFormatted(millis) {
+	const getDurationFormatted = (millis) => {
 		const minutes = millis / 1000 / 60;
 		const minutesDisplay = Math.floor(minutes);
 		const seconds = Math.round((minutes - minutesDisplay) * 60);
 		const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
 		return `${minutesDisplay}:${secondsDisplay}`;
-	}
+	};
 
-	function getRecordingLines() {
+	const getRecordingLines = () => {
 		return recordings.map((recordingLine, index) => {
 			return (
-				<View key={index} style={styles.row}>
-					<Text style={styles.fill}>
-						Recording {index + 1} - {recordingLine.duration}
-					</Text>
-					<PlayButton onPress={() => recordingLine.sound.replayAsync()}>
-						<Text>Play</Text>
-						<Text>
-							<AntDesign name="sound" size={40} color="black" />
-						</Text>
-					</PlayButton>
-				</View>
+				<SpeakerContainer key={index}>
+					<AntDesign name="sound" size={80} color="black" />
+					<Text>{recordingLine.duration}</Text>
+				</SpeakerContainer>
 			);
 		});
-	}
+	};
+
+	const handleRecording = () => {
+		if (!recording && recordings.length !== 0) {
+			recordings[0].sound.replayAsync();
+		} else if (!recording) {
+			startRecording();
+		} else {
+			stopRecording();
+		}
+	};
+
 	return (
 		<>
 			<View>
@@ -83,28 +87,42 @@ const VoiceRecording = () => {
 			<Text>{message}</Text>
 			{getRecordingLines()}
 			<RecordingContainer>
-				<RecordButton
-					status={recording}
-					onPress={recording ? stopRecording : startRecording}
-				>
+				<RecordButton status={recording} onPress={handleRecording}>
 					<Text>
-						{!recording ? (
+						{!recording && recordings.length !== 0 ? (
+							<AntDesign name="caretright" size={40} color="black" />
+						) : !recording ? (
 							<Entypo name="controller-record" size={60} color="#DF6A6A" />
 						) : (
 							<FontAwesome name="square" size={40} color="black" />
 						)}
 					</Text>
 				</RecordButton>
-				<Text>{recording ? "Stop Recording" : "Start Recording"}</Text>
+				<Text>
+					{!recording && recordings.length !== 0
+						? "Play audio"
+						: !recording
+						? "Start recording"
+						: "Stop recording"}
+				</Text>
 			</RecordingContainer>
 			{recordings.length !== 0 ? (
-				<ContinueButton
-					onPress={() => {
-						console.log("pressed");
-					}}
-				>
-					<Text>Continue</Text>
-				</ContinueButton>
+				<>
+					<ContinueButton
+						onPress={() => {
+							navigation.navigate("Home");
+						}}
+					>
+						<Text>Continue</Text>
+					</ContinueButton>
+					<DeleteButton
+						onPress={() => {
+							setRecordings([]);
+						}}
+					>
+						<Text style={{ color: "red" }}>Delete</Text>
+					</DeleteButton>
+				</>
 			) : null}
 		</>
 	);
@@ -144,24 +162,21 @@ const ContinueButton = styled(TouchableOpacity)`
 	bottom: 30px;
 `;
 
-const PlayButton = styled(TouchableOpacity)`
+const DeleteButton = styled(TouchableOpacity)`
 	align-items: center;
-	flex-direction: column-reverse;
+	margin-top: 20px;
+	background-color: #d9d9d9;
+	padding: 10px 30px;
+	border: 2px solid black;
+	border-radius: 15px;
+	align-self: center;
 `;
 
-const styles = StyleSheet.create({
-	row: {
-		flexDirection: "row",
-		alignItems: "center",
-		justifyContent: "center",
-	},
-	fill: {
-		flex: 1,
-		fontSize: 18,
-	},
-	button: {
-		margin: 16,
-	},
-});
+const SpeakerContainer = styled(View)`
+	align-items: center;
+	width: 100%;
+	top: 250px;
+	position: absolute;
+`;
 
 export default VoiceRecording;
