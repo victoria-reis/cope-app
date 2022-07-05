@@ -1,12 +1,12 @@
 // modules
 import React from "react";
 import { useEffect, useState } from "react";
-import { Text, View } from "react-native";
+import { Text, View, Image } from "react-native";
 import styled from "styled-components";
-// import {
-// 	useFonts,
-// 	PlayfairDisplay_700Bold,
-// } from "@expo-google-fonts/playfair-display";
+// import { LinearTextGradient } from "react-native-text-gradient";
+
+// components
+import GradientText from "../components/GradientText";
 
 // initial screen
 const LoadingScreen = () => {
@@ -16,15 +16,39 @@ const LoadingScreen = () => {
 	useEffect(() => {
 		setTimeout(() => {
 			setWelcomeMsgTimer(true);
-		}, 3000);
+		}, 4000);
 	}, []);
 
 	return (
 		<LoadingPageContainer>
 			{!welcomeMsgTimer ? (
-				<AppName>Cope</AppName>
+				<GradientText
+					style={{
+						fontFamily: "PlayfairDisplay_700Bold",
+						fontSize: 64,
+						textAlign: "center",
+						margin: 45,
+					}}
+				>
+					Cope
+				</GradientText>
 			) : (
-				<WelcomeMessage>"Everything is going to be okay."</WelcomeMessage>
+				// <LogoContainer>
+				// 	<Image
+				// 		source={require("../../assets/Cope._logo.png")}
+				// 		style={{ maxWidth: "100%" }}
+				// 	/>
+				// </LogoContainer>
+				<GradientText
+					style={{
+						fontFamily: "PlayfairDisplay_700Bold",
+						fontSize: 40,
+						textAlign: "center",
+						margin: 45,
+					}}
+				>
+					"Everything is going to be okay."
+				</GradientText>
 			)}
 		</LoadingPageContainer>
 	);
@@ -35,18 +59,11 @@ const LoadingPageContainer = styled(View)`
 	flex: 1;
 	align-items: center;
 	justify-content: center;
+	/* border: 2px solid yellow; */
 `;
 
-const AppName = styled(Text)`
-	font-size: 50px;
-	font-weight: bold;
-`;
-
-const WelcomeMessage = styled(Text)`
-	font-size: 40px;
-	font-weight: bold;
-	max-width: 75%;
-	text-align: center;
+const LogoContainer = styled(View)`
+	width: 80%;
 `;
 
 export default LoadingScreen;

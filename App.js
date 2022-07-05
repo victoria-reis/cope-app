@@ -7,58 +7,37 @@ import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
+import {
+	useFonts,
+	PlayfairDisplay_700Bold,
+} from "@expo-google-fonts/playfair-display";
+
+// components
+import AppNavigator from "./src/components/AppNavigator";
 
 // screens
-import HomeScreen from "./src/screens/HomeScreen";
-import SessionsMenuScreen from "./src/screens/SessionsMenuScreen";
-import NewSessionScreen from "./src/screens/NewSessionScreen";
 import LoadingScreen from "./src/screens/LoadingScreen";
-
-const Tab = createBottomTabNavigator();
-
-const AppNavigator = () => {
-	return (
-		<NavigationContainer>
-			<Tab.Navigator
-				initialRouteName="Home"
-				screenOptions={{ headerShown: false }}
-			>
-				<Tab.Screen
-					name="Home"
-					component={HomeScreen}
-					options={{
-						tabBarIcon: () => <AntDesign name="home" size={25} />,
-					}}
-				/>
-				<Tab.Screen
-					name="Entries"
-					component={SessionsMenuScreen}
-					options={{
-						tabBarIcon: () => <AntDesign name="profile" size={25} />,
-					}}
-				/>
-				<Tab.Screen
-					name="New Session"
-					component={NewSessionScreen}
-					options={{
-						tabBarStyle: { display: "none" },
-						tabBarIcon: () => <AntDesign name="pluscircleo" size={25} />,
-					}}
-				/>
-			</Tab.Navigator>
-		</NavigationContainer>
-	);
-};
+import OnboardingScreen from "./src/screens/OnboardingScreen";
+import HomeScreen from "./src/screens/HomeScreen";
 
 const App = () => {
 	// state for loading page timer (app name and welcome message)
 	const [logoTimer, setLogoTimer] = useState(true);
+	// const [showOnboarding, setShowOnboarding] = useState(false);
 	// as soon as the app runs, loading screen appears for 6s with app name and message
 	useEffect(() => {
 		setTimeout(() => {
 			setLogoTimer(false);
-		}, 6000);
+		}, 8000);
 	}, []);
+
+	const [fontsLoaded] = useFonts({
+		PlayfairDisplay_700Bold,
+	});
+
+	if (!fontsLoaded) {
+		return null;
+	}
 
 	return (
 		<>
