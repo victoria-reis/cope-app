@@ -20,42 +20,58 @@ const OnboardingScreen = (props) => {
 	const [playbackObject, setPlaybackObject] = useState(null);
 	const [playbackStatus, setPlaybackStatus] = useState(null);
 
-	// const handleSkip = () => {
-	//     navigation.navigate()
-	// };
-
 	// useEffect(() => {
 	// 	if (playbackObject === null) {
 	// 		setPlaybackObject(new Audio.Sound());
 	// 	}
 	// }, []);
 
-	// const handleAudio = async () => {
-	// 	console.log("pressed");
+	const handleAudioPlayPause = async () => {
+		// playing audio for the first time
+		if (playbackStatus === null) {
+			console.log("first play");
+			const playbackObject = new Audio.Sound();
+			const status = await playbackObject.loadAsync(
+				require("../../assets/voice.mp3"),
+				{
+					shouldPlay: true,
+					positionMillis: 0,
+				}
+			);
+			setPlaybackObject(playbackObject);
+			console.log(playbackStatus);
+			return setPlaybackStatus(status);
+		}
 
-	// 	if (playbackObject !== null && playbackStatus === null) {
-	// 		const status = await playbackObject.loadAsync(
-	// 			require("../../assets/voice.mp3"),
-	// 			{ shouldPlay: true }
-	// 		);
-	// 		setIsPlaying(true);
-	// 		return setPlaybackStatus(status);
-	// 	}
+		// pausing audio
+		if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
+			// const status = await playbackObject.setStatusAsync({ shouldPlay: false });
+			console.log("pause");
+			const status = await playbackObject.pauseAsync();
+			console.log(playbackStatus);
+			return setPlaybackStatus(status);
+		}
 
-	// 	// It will pause our audio
-	// 	if (playbackStatus.isPlaying) {
-	// 		const status = await playbackObject.pauseAsync();
-	// 		setIsPlaying(false);
-	// 		return setPlaybackStatus(status);
-	// 	}
+		// resuming audio
+		if (playbackStatus.isLoaded && !playbackStatus.isPlaying) {
+			console.log("resuming");
+			const status = await playbackObject.playAsync();
+			console.log(playbackStatus);
+			return setPlaybackStatus(status);
+		}
 
-	// 	// It will resume our audio
-	// 	if (!playbackStatus.isPlaying) {
-	// 		const status = await playbackObject.playAsync();
-	// 		setIsPlaying(true);
-	// 		return setPlaybackStatus(status);
-	// 	}
-	// };
+		// replaying audio
+		// if (
+		// 	playbackStatus.isLoaded &&
+		// 	!playbackStatus.isPlaying &&
+		// 	playbackStatus.positionMillis === 3240
+		// ) {
+		// 	console.log("replaying");
+		// 	// const status = await playbackObject.playFromPositionAsync(0);
+		// 	const status = await playbackObject.replayAsync();
+		// 	return setPlaybackStatus(status);
+		// }
+	};
 
 	return (
 		<ScreenContainer
@@ -98,12 +114,12 @@ const OnboardingScreen = (props) => {
 					colors={["#9F91CE", "#7CA3CA"]}
 					style={{ borderRadius: 50 }}
 				>
-					<PlayPauseButton onPress={() => {}}>
-						{!isPlaying ? (
-							<AntDesign name="caretright" size={24} color="white" />
-						) : (
-							<AntDesign name="pause" size={24} color="black" />
-						)}
+					<PlayPauseButton onPress={handleAudioPlayPause}>
+						{/* {!isPlaying ? ( */}
+						<AntDesign name="caretright" size={24} color="white" />
+						{/* // ) : (
+						// 	<AntDesign name="pause" size={24} color="black" />
+						// )} */}
 					</PlayPauseButton>
 				</LinearGradient>
 				<ForwardBackwardButton>
@@ -138,7 +154,6 @@ const ScreenContainer = styled(SafeAreaView)`
 `;
 
 const TextContainer = styled(View)`
-	/* border: 1px solid red; */
 	margin-top: 40px;
 `;
 
@@ -163,7 +178,6 @@ const SkipText = styled(Text)`
 `;
 
 const ImageContainer = styled(View)`
-	/* border: 1px solid red; */
 	align-items: center;
 	margin: 70px 0;
 `;
