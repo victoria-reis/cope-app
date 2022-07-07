@@ -14,22 +14,16 @@ import { AntDesign } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { Audio } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
+import { getDurationFormatted } from "../components/VoiceRecording";
 
 const OnboardingScreen = (props) => {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [playbackObject, setPlaybackObject] = useState(null);
 	const [playbackStatus, setPlaybackStatus] = useState(null);
 
-	// useEffect(() => {
-	// 	if (playbackObject === null) {
-	// 		setPlaybackObject(new Audio.Sound());
-	// 	}
-	// }, []);
-
 	const handleAudioPlayPause = async () => {
 		// playing audio for the first time
 		if (playbackStatus === null) {
-			console.log("first play");
 			const playbackObject = new Audio.Sound();
 			const status = await playbackObject.loadAsync(
 				require("../../assets/voice.mp3"),
@@ -39,32 +33,30 @@ const OnboardingScreen = (props) => {
 				}
 			);
 			setPlaybackObject(playbackObject);
-			console.log(playbackStatus);
 			return setPlaybackStatus(status);
 		}
 
 		// pausing audio
 		if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
-			// const status = await playbackObject.setStatusAsync({ shouldPlay: false });
-			console.log("pause");
 			const status = await playbackObject.pauseAsync();
-			console.log(playbackStatus);
 			return setPlaybackStatus(status);
 		}
 
 		// resuming audio
-		if (playbackStatus.isLoaded && !playbackStatus.isPlaying) {
-			console.log("resuming");
+		if (
+			playbackStatus.isLoaded &&
+			!playbackStatus.isPlaying &&
+			playbackStatus.positionMillis < 3240
+		) {
 			const status = await playbackObject.playAsync();
-			console.log(playbackStatus);
 			return setPlaybackStatus(status);
 		}
 
 		// replaying audio
 		// if (
 		// 	playbackStatus.isLoaded &&
-		// 	!playbackStatus.isPlaying &&
-		// 	playbackStatus.positionMillis === 3240
+		// 	playbackStatus.positionMillis >= 3240 &&
+		// 	!playbackStatus.isPlaying
 		// ) {
 		// 	console.log("replaying");
 		// 	// const status = await playbackObject.playFromPositionAsync(0);
@@ -84,26 +76,32 @@ const OnboardingScreen = (props) => {
 			>
 				<SkipText>Skip</SkipText>
 			</SkipButton>
+
 			<TextContainer>
 				<IntroText>Hi, I'm Cope</IntroText>
 				<IntroText>Let me introduce myself.</IntroText>
 			</TextContainer>
+
 			<ImageContainer>
 				<Image source={require("../../assets/cope.png")} />
 			</ImageContainer>
 			<ProgressContainer>
 				<Slider
 					style={{ width: 350, height: 50 }}
-					value={10}
+					value={playbackStatus ? playbackStatus.positionMillis : 0}
 					minimumValue={0}
-					maximumValue={100}
+					maximumValue={3240}
 					minimumTrackTintColor="#9C94CE"
 					maximumTrackTintColor="#C2C2C2"
 					thumbTintColor="#8E9BCD"
 				/>
 				<ProgressTextContainer>
 					<ProgressText>0:00</ProgressText>
-					<ProgressText>1:00</ProgressText>
+					<ProgressText>
+						{playbackStatus
+							? getDurationFormatted(playbackStatus.durationMillis)
+							: "0:00"}
+					</ProgressText>
 				</ProgressTextContainer>
 			</ProgressContainer>
 			<AudioControlContainer>
@@ -115,11 +113,11 @@ const OnboardingScreen = (props) => {
 					style={{ borderRadius: 50 }}
 				>
 					<PlayPauseButton onPress={handleAudioPlayPause}>
-						{/* {!isPlaying ? ( */}
-						<AntDesign name="caretright" size={24} color="white" />
-						{/* // ) : (
-						// 	<AntDesign name="pause" size={24} color="black" />
-						// )} */}
+						{playbackStatus === null || !playbackStatus.isPlaying ? (
+							<AntDesign name="caretright" size={24} color="white" />
+						) : (
+							<AntDesign name="pause" size={24} color="black" />
+						)}
 					</PlayPauseButton>
 				</LinearGradient>
 				<ForwardBackwardButton>

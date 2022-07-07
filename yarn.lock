@@ -1078,6 +1078,11 @@
   resolved "https://registry.npmjs.org/@emotion/unitless/-/unitless-0.7.5.tgz"
   integrity sha512-OWORNpfjMsSSUBVrRBVGECkhWcULOAJz9ZW8uK9qgxD+87M7jHRcvh/A96XXNhXTLmKcoYSQtBEX7lHMO7YRwg==
 
+"@expo-google-fonts/open-sans@^0.2.2":
+  version "0.2.2"
+  resolved "https://registry.yarnpkg.com/@expo-google-fonts/open-sans/-/open-sans-0.2.2.tgz#def732e59536745a7df324b870643b57b25620f8"
+  integrity sha512-jITtlGDb5QZ3O8W70eqvGki7+tYGQ/+pPEv58RM7n5QQ6xXJPXumE4KnjDClEvEQ2zZYzVlVo6InqARIgEf1Kg==
+
 "@expo-google-fonts/playfair-display@^0.2.2":
   version "0.2.2"
   resolved "https://registry.npmjs.org/@expo-google-fonts/playfair-display/-/playfair-display-0.2.2.tgz"
@@ -1683,7 +1688,7 @@
 
 "@react-native-community/slider@4.2.1":
   version "4.2.1"
-  resolved "https://registry.yarnpkg.com/@react-native-community/slider/-/slider-4.2.1.tgz#8f1c8cf62de1bd91ce1e32585f7eb666f21e5025"
+  resolved "https://registry.npmjs.org/@react-native-community/slider/-/slider-4.2.1.tgz"
   integrity sha512-6HUS5HbB9bvEN4GiwBlxECgPWQIugHE+kfnxqX2jHUl1SE57MRpw00m1qVs4hXtEPQndBl6mAQiGbKCOtLPVbg==
 
 "@react-native-masked-view/masked-view@0.2.6":
