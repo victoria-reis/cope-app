@@ -22,8 +22,8 @@ import CloseModal from "../components/CloseModal";
 const NewSessionScreen = ({ navigation }) => {
 	const [showRating, setShowRating] = useState(true);
 	const [feeling, setFeeling] = useState("");
-	const [showCategories, setShowCategories] = useState(false);
-	const [category, setCategory] = useState("");
+	const [showStressors, setShowStressors] = useState(false);
+	const [stressors, setStressors] = useState([]);
 	const [modalVisible, setModalVisible] = useState(false);
 
 	const handleClose = () => {
@@ -34,13 +34,6 @@ const NewSessionScreen = ({ navigation }) => {
 		<ScreenContainer
 			style={Platform.OS ? { marginTop: StatusBar.currentHeight } : null}
 		>
-			<CloseButton onPress={handleClose}>
-				<Text>
-					<AntDesign name="close" size={30} color="black" />
-				</Text>
-			</CloseButton>
-			{/*the cross sign to close the session */}
-
 			<CloseModal
 				modalVisible={modalVisible}
 				setModalVisible={setModalVisible}
@@ -55,21 +48,21 @@ const NewSessionScreen = ({ navigation }) => {
 					feeling={feeling}
 					setFeeling={setFeeling}
 					setShowRating={setShowRating}
-					setShowCategories={setShowCategories}
+					setShowStressors={setShowStressors}
 				/>
 			) : //here we tried to pass down feeling, setFeeling as props to the AnxietyRating component as props
 
 			// Inside the AnxietyRating component we will set showRating to false to so the showCategories run
 
-			showCategories ? (
+			showStressors ? (
 				// where user will choose what they are anxious about
 				<AnxietyCategories
-					category={category}
-					setCategory={setCategory}
-					setShowCategories={setShowCategories}
+					stressors={stressors}
+					setStressors={setStressors}
+					setShowStressors={setShowStressors}
 				/>
 			) : // After ruunning the AnxietyCategories we will set shoCategories to false also inside the AnxietyCategories component
-			!showRating && !showCategories ? (
+			!showRating && !showStressors ? (
 				// where user will record voice
 				<VoiceRecording navigation={navigation} />
 			) : null}

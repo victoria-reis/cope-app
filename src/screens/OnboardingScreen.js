@@ -21,6 +21,7 @@ const OnboardingScreen = (props) => {
 	const [playbackObject, setPlaybackObject] = useState(null);
 	const [playbackStatus, setPlaybackStatus] = useState(null);
 
+	// when user pressess play the following triggers
 	const handleAudioPlayPause = async () => {
 		// playing audio for the first time
 		if (playbackStatus === null) {
@@ -52,7 +53,7 @@ const OnboardingScreen = (props) => {
 			return setPlaybackStatus(status);
 		}
 
-		// replaying audio
+		// replaying audio (not working properly at the moment)
 		// if (
 		// 	playbackStatus.isLoaded &&
 		// 	playbackStatus.positionMillis >= 3240 &&
@@ -173,6 +174,8 @@ const SkipButton = styled(TouchableOpacity)`
 
 const SkipText = styled(Text)`
 	color: #bdbdbd;
+	font-family: OpenSans_700Bold;
+	font-size: 12px;
 `;
 
 const ImageContainer = styled(View)`
@@ -199,7 +202,6 @@ const PlayPauseButton = styled(TouchableOpacity)`
 
 const ProgressContainer = styled(View)`
 	align-items: center;
-	/* border: 1px solid red; */
 `;
 
 const ProgressTextContainer = styled(View)`

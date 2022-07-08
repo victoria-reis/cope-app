@@ -1,5 +1,5 @@
 import React from "react";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
@@ -9,41 +9,23 @@ const AnxietyRating = ({
 	feeling,
 	setFeeling,
 	setShowRating,
-	setShowCategories,
+	setShowStressors,
 }) => {
-	const [isContinue, setIsContinue] = useState(false);
+	const [canContinue, setCanContinue] = useState(false);
 
 	const handleFeelingSelection = (currentFeeling) => {
-		// if (feelingsArray.includes(feeling)) {
-		// 	console.log("match");
-		// 	const index = feelingsArray.indexOf(feeling);
-		// 	feelingsArray.splice(index, 1);
-		// } else {
-		// 	console.log("no match");
-		// 	feelingsArray.push(feeling);
-		// }
-		// console.log(feelingsArray);
-		// if (feelingsArray.length > 0) {
-		// 	setIsContinue(true);
-		// } else {
-		// 	setIsContinue(false);
-		// }
 		if (!feeling || feeling !== currentFeeling) {
 			setFeeling(currentFeeling);
-			setIsContinue(true);
-			console.log(isContinue);
+			setCanContinue(true);
 		} else if (feeling === currentFeeling) {
 			setFeeling("");
-			setIsContinue(false);
-			console.log(isContinue);
+			setCanContinue(false);
 		}
-		// setShowRating(false);
-		// setShowCategories(true);
 	};
 
 	const handleContinue = () => {
 		setShowRating(false);
-		setShowCategories(true);
+		setShowStressors(true);
 	};
 
 	const feelingsData = [
@@ -103,10 +85,10 @@ const AnxietyRating = ({
 			</RatingContainer>
 			<ContinueButtonContainer>
 				<ContinueButton
-					continue={isContinue}
-					disabled={isContinue ? false : true}
+					continue={canContinue}
+					disabled={canContinue ? false : true}
 					style={
-						isContinue
+						canContinue
 							? {
 									shadowColor: "#000",
 									shadowOffset: {
@@ -135,6 +117,7 @@ const Heading = styled(Text)`
 	font-family: PlayfairDisplay_700Bold;
 	color: #505050;
 	text-align: center;
+	margin-top: 60px;
 `;
 
 const RatingContainer = styled(View)`
