@@ -13,22 +13,26 @@ import styled from "styled-components";
 import { AntDesign } from "@expo/vector-icons";
 
 // components
-import AnxietyRating from "../components/AnxietyRating";
+import PreSessionAnxietyRating from "../components/PreSessionAnxietyRating";
+import PostSessionAnxietyRating from "../components/PostSessionAnxietyRating";
 import AnxietyCategories from "../components/AnxietyCategories";
 import VoiceRecording from "../components/VoiceRecording";
 import CloseModal from "../components/CloseModal";
 
 // new session screen
 const NewSessionScreen = ({ navigation }) => {
-	const [showRating, setShowRating] = useState(true);
-	const [feeling, setFeeling] = useState("");
+	const [showRating1, setShowRating1] = useState(true);
+	const [showRating2, setShowRating2] = useState(false);
 	const [showStressors, setShowStressors] = useState(false);
+	const [showVoiceRecording, setShowVoiceRecording] = useState(false);
+	const [feeling1, setFeeling1] = useState("");
+	const [feeling2, setFeeling2] = useState("");
 	const [stressors, setStressors] = useState([]);
 	const [modalVisible, setModalVisible] = useState(false);
 
-	const handleClose = () => {
-		setModalVisible(true);
-	};
+	// const handleClose = () => {
+	// 	setModalVisible(true);
+	// };
 
 	return (
 		<ScreenContainer
@@ -38,16 +42,16 @@ const NewSessionScreen = ({ navigation }) => {
 				modalVisible={modalVisible}
 				setModalVisible={setModalVisible}
 				navigation={navigation}
-				setShowRating={setShowRating}
+				setShowRating1={setShowRating1}
 			/>
 			{/* here trying to pass down the state values as props to CloseModal component  */}
 
-			{showRating ? (
+			{showRating1 ? (
 				//where user will rate their anxiety
-				<AnxietyRating
-					feeling={feeling}
-					setFeeling={setFeeling}
-					setShowRating={setShowRating}
+				<PreSessionAnxietyRating
+					feeling1={feeling1}
+					setFeeling1={setFeeling1}
+					setShowRating1={setShowRating1}
 					setShowStressors={setShowStressors}
 				/>
 			) : //here we tried to pass down feeling, setFeeling as props to the AnxietyRating component as props
@@ -60,11 +64,18 @@ const NewSessionScreen = ({ navigation }) => {
 					stressors={stressors}
 					setStressors={setStressors}
 					setShowStressors={setShowStressors}
+					setShowVoiceRecording={setShowVoiceRecording}
 				/>
 			) : // After ruunning the AnxietyCategories we will set shoCategories to false also inside the AnxietyCategories component
-			!showRating && !showStressors ? (
+			!showRating1 && !showStressors && showVoiceRecording ? (
 				// where user will record voice
-				<VoiceRecording navigation={navigation} />
+				<VoiceRecording setShowVoiceRecording={setShowVoiceRecording} />
+			) : !showRating1 && !showStressors && !showVoiceRecording ? (
+				<PostSessionAnxietyRating
+					feeling2={feeling2}
+					setFeeling2={setFeeling2}
+					navigation={navigation}
+				/>
 			) : null}
 		</ScreenContainer>
 	);

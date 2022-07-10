@@ -7,7 +7,7 @@ import { Entypo, FontAwesome, AntDesign } from "@expo/vector-icons";
 //import * as Sharing from 'expo-sharing';
 
 // where user will record voice
-const VoiceRecording = ({ navigation }) => {
+const VoiceRecording = ({ navigation, setShowVoiceRecording }) => {
 	const [recording, setRecording] = useState();
 	const [recordings, setRecordings] = useState([]);
 	const [message, setMessage] = useState("");
@@ -102,7 +102,7 @@ const VoiceRecording = ({ navigation }) => {
 				<>
 					<ContinueButton
 						onPress={() => {
-							navigation.navigate("Home");
+							setShowVoiceRecording(false);
 						}}
 					>
 						<Text>Continue</Text>

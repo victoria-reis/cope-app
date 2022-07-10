@@ -115,9 +115,9 @@ const OnboardingScreen = (props) => {
 				>
 					<PlayPauseButton onPress={handleAudioPlayPause}>
 						{playbackStatus === null || !playbackStatus.isPlaying ? (
-							<AntDesign name="caretright" size={24} color="white" />
+							<AntDesign name="caretright" size={24} color="#FFFEFE" />
 						) : (
-							<AntDesign name="pause" size={24} color="black" />
+							<AntDesign name="pause" size={24} color="#FFFEFE" />
 						)}
 					</PlayPauseButton>
 				</LinearGradient>

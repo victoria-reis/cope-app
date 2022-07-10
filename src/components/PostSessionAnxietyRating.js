@@ -5,28 +5,23 @@ import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 
 // where user will rate their anxiety
-const AnxietyRating = ({
-	feeling,
-	setFeeling,
-	setShowRating,
-	setShowStressors,
-}) => {
+const PostSessionAnxietyRating = ({ feeling2, setFeeling2, navigation }) => {
 	const [canContinue, setCanContinue] = useState(false);
 
 	const handleFeelingSelection = (currentFeeling) => {
-		if (!feeling || feeling !== currentFeeling) {
-			setFeeling(currentFeeling);
+		if (!feeling2 || feeling2 !== currentFeeling) {
+			setFeeling2(currentFeeling);
 			setCanContinue(true);
-		} else if (feeling === currentFeeling) {
-			setFeeling("");
+		} else if (feeling2 === currentFeeling) {
+			setFeeling2("");
 			setCanContinue(false);
 		}
 	};
 
-	const handleContinue = () => {
-		setShowRating(false);
-		setShowStressors(true);
-	};
+	// const handleContinue = () => {
+	// 	setShowRating(false);
+	// 	setShowStressors(true);
+	// };
 
 	const feelingsData = [
 		{ feeling: "Doing Good", img: require("../../assets/good-emoji.png") },
@@ -73,7 +68,7 @@ const AnxietyRating = ({
 								style={{
 									borderWidth: 2,
 									borderColor:
-										feeling === item.feeling ? "#f9c45e" : "transparent",
+										feeling2 === item.feeling ? "#f9c45e" : "transparent",
 								}}
 							>
 								<MoodTitle>{item.feeling}</MoodTitle>
@@ -102,7 +97,9 @@ const AnxietyRating = ({
 							  }
 							: null
 					}
-					onPress={handleContinue}
+					onPress={() => {
+						navigation.navigate("Home");
+					}}
 				>
 					<ContinueText>Continue</ContinueText>
 				</ContinueButton>
@@ -169,4 +166,4 @@ const ContinueButtonContainer = styled(View)`
 	justify-content: flex-end;
 `;
 
-export default AnxietyRating;
+export default PostSessionAnxietyRating;

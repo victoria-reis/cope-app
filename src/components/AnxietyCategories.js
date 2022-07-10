@@ -6,7 +6,12 @@ import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 
 // where user will choose what they are anxious about
-const AnxietyCategories = ({ setStressors, setShowStressors, stressors }) => {
+const AnxietyCategories = ({
+	setStressors,
+	setShowStressors,
+	stressors,
+	setShowVoiceRecording,
+}) => {
 	const [canContinue, setCanContinue] = useState(false);
 	useEffect(() => {
 		isSelected();
@@ -112,6 +117,7 @@ const AnxietyCategories = ({ setStressors, setShowStressors, stressors }) => {
 					}
 					onPress={() => {
 						setShowStressors(false);
+						setShowVoiceRecording(true);
 					}}
 				>
 					<ContinueText>Continue</ContinueText>
