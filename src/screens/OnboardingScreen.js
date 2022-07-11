@@ -10,7 +10,7 @@ import {
 	Image,
 } from "react-native";
 import styled from "styled-components";
-import { AntDesign } from "@expo/vector-icons";
+import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { Audio } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
@@ -20,26 +20,36 @@ const OnboardingScreen = (props) => {
 	const [isPlaying, setIsPlaying] = useState(false);
 	const [playbackObject, setPlaybackObject] = useState(null);
 	const [playbackStatus, setPlaybackStatus] = useState(null);
+	const [playbackPosition, setPlaybackPosition] = useState(null);
+	const [playbackDuration, setPlaybackDuration] = useState(null);
 
 	// when user pressess play the following triggers
 	const handleAudioPlayPause = async () => {
+		console.log("pressing", playbackStatus);
 		// playing audio for the first time
 		if (playbackStatus === null) {
 			const playbackObject = new Audio.Sound();
 			const status = await playbackObject.loadAsync(
-				require("../../assets/voice.mp3"),
+				require("../../assets/onboarding-audio.mp3"),
 				{
 					shouldPlay: true,
-					positionMillis: 0,
 				}
 			);
 			setPlaybackObject(playbackObject);
+			playbackObject.setProgressUpdateIntervalAsync(100);
+			playbackObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
+			console.log("playing");
 			return setPlaybackStatus(status);
 		}
 
 		// pausing audio
-		if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
+		if (
+			playbackStatus.isLoaded &&
+			playbackStatus.isPlaying &&
+			playbackPosition < 99500
+		) {
 			const status = await playbackObject.pauseAsync();
+			console.log("pausing");
 			return setPlaybackStatus(status);
 		}
 
@@ -47,13 +57,23 @@ const OnboardingScreen = (props) => {
 		if (
 			playbackStatus.isLoaded &&
 			!playbackStatus.isPlaying &&
-			playbackStatus.positionMillis < 3240
+			playbackPosition < 99500
 		) {
 			const status = await playbackObject.playAsync();
+			console.log("resuming");
 			return setPlaybackStatus(status);
 		}
 
 		// replaying audio (not working properly at the moment)
+		if (
+			playbackStatus.isLoaded &&
+			playbackStatus.isPlaying &&
+			playbackPosition >= 99500
+		) {
+			const status = await playbackObject.replayAsync();
+			console.log("replaying");
+			return setPlaybackStatus(status);
+		}
 		// if (
 		// 	playbackStatus.isLoaded &&
 		// 	playbackStatus.positionMillis >= 3240 &&
@@ -66,6 +86,34 @@ const OnboardingScreen = (props) => {
 		// }
 	};
 
+	const onPlaybackStatusUpdate = (playbackStatus) => {
+		if (playbackStatus.isLoaded && playbackStatus.isPlaying) {
+			// console.log(playbackStatus);
+			setPlaybackPosition(playbackStatus.positionMillis);
+			setPlaybackDuration(playbackStatus.durationMillis);
+		}
+	};
+
+	const calculateSeekBar = () => {
+		if (playbackPosition !== null && playbackDuration !== null) {
+			return playbackPosition / playbackDuration;
+		} else {
+			return 0;
+		}
+	};
+
+	const handleBackward = async () => {
+		if (playbackStatus) {
+			playbackObject.setPositionAsync(playbackPosition - 10000);
+		}
+	};
+
+	const handleForward = async () => {
+		if (playbackStatus) {
+			playbackObject.setPositionAsync(playbackPosition + 10000);
+		}
+	};
+
 	return (
 		<ScreenContainer
 			style={Platform.OS ? { marginTop: StatusBar.currentHeight } : null}
@@ -73,6 +121,7 @@ const OnboardingScreen = (props) => {
 			<SkipButton
 				onPress={() => {
 					props.navigation.navigate("Home");
+					playbackObject.stopAsync();
 				}}
 			>
 				<SkipText>Skip</SkipText>
@@ -89,24 +138,22 @@ const OnboardingScreen = (props) => {
 			<ProgressContainer>
 				<Slider
 					style={{ width: 350, height: 50 }}
-					value={playbackStatus ? playbackStatus.positionMillis : 0}
+					value={calculateSeekBar()}
 					minimumValue={0}
-					maximumValue={3240}
+					maximumValue={1}
 					minimumTrackTintColor="#9C94CE"
 					maximumTrackTintColor="#C2C2C2"
 					thumbTintColor="#8E9BCD"
 				/>
 				<ProgressTextContainer>
-					<ProgressText>0:00</ProgressText>
+					<ProgressText>{getDurationFormatted(playbackPosition)}</ProgressText>
 					<ProgressText>
-						{playbackStatus
-							? getDurationFormatted(playbackStatus.durationMillis)
-							: "0:00"}
+						-{getDurationFormatted(playbackDuration - playbackPosition)}
 					</ProgressText>
 				</ProgressTextContainer>
 			</ProgressContainer>
 			<AudioControlContainer>
-				<ForwardBackwardButton>
+				<ForwardBackwardButton onPress={handleBackward}>
 					<AntDesign name="banckward" size={15} color="#F9C45E" />
 				</ForwardBackwardButton>
 				<LinearGradient
@@ -114,14 +161,17 @@ const OnboardingScreen = (props) => {
 					style={{ borderRadius: 50 }}
 				>
 					<PlayPauseButton onPress={handleAudioPlayPause}>
-						{playbackStatus === null || !playbackStatus.isPlaying ? (
+						{playbackStatus === null ||
+						!playbackStatus.isPlaying ||
+						playbackPosition > 99500 ? (
 							<AntDesign name="caretright" size={24} color="#FFFEFE" />
-						) : (
-							<AntDesign name="pause" size={24} color="#FFFEFE" />
-						)}
+						) : (playbackStatus !== null && playbackStatus.isPlaying) ||
+						  playbackPosition < 99500 ? (
+							<FontAwesome5 name="pause" size={24} color="#FFFEFE" />
+						) : null}
 					</PlayPauseButton>
 				</LinearGradient>
-				<ForwardBackwardButton>
+				<ForwardBackwardButton onPress={handleForward}>
 					<AntDesign name="forward" size={15} color="#F9C45E" />
 				</ForwardBackwardButton>
 			</AudioControlContainer>
@@ -139,6 +189,7 @@ const OnboardingScreen = (props) => {
 				}}
 				onPress={() => {
 					props.navigation.navigate("New Session");
+					playbackObject.stopAsync();
 				}}
 			>
 				<SessionButtonText>Start a Session</SessionButtonText>
@@ -213,6 +264,7 @@ const ProgressTextContainer = styled(View)`
 
 const ProgressText = styled(Text)`
 	color: #505050;
+	font-family: OpenSans_600SemiBold;
 `;
 
 const SessionButton = styled(TouchableOpacity)`

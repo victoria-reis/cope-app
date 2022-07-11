@@ -85,6 +85,7 @@ const NewSessionScreen = ({ navigation }) => {
 const ScreenContainer = styled(SafeAreaView)`
 	flex: 1;
 	margin: 20px;
+	/* background-color: white; */
 `;
 
 const CloseButton = styled(TouchableOpacity)`
