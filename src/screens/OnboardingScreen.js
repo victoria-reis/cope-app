@@ -30,7 +30,7 @@ const OnboardingScreen = (props) => {
 		if (playbackStatus === null) {
 			const playbackObject = new Audio.Sound();
 			const status = await playbackObject.loadAsync(
-				require("../../assets/onboarding-audio.mp3"),
+				require("../../assets/audios/onboarding-audio.mp3"),
 				{
 					shouldPlay: true,
 				}
@@ -120,8 +120,10 @@ const OnboardingScreen = (props) => {
 		>
 			<SkipButton
 				onPress={() => {
-					props.navigation.navigate("Home");
-					playbackObject.stopAsync();
+					props.navigation.navigate("Entries");
+					if (playbackObject) {
+						playbackObject.stopAsync();
+					}
 				}}
 			>
 				<SkipText>Skip</SkipText>
@@ -133,7 +135,7 @@ const OnboardingScreen = (props) => {
 			</TextContainer>
 
 			<ImageContainer>
-				<Image source={require("../../assets/cope.png")} />
+				<Image source={require("../../assets/images/cope.png")} />
 			</ImageContainer>
 			<ProgressContainer>
 				<Slider
@@ -189,7 +191,9 @@ const OnboardingScreen = (props) => {
 				}}
 				onPress={() => {
 					props.navigation.navigate("New Session");
-					playbackObject.stopAsync();
+					if (playbackObject) {
+						playbackObject.stopAsync();
+					}
 				}}
 			>
 				<SessionButtonText>Start a Session</SessionButtonText>

@@ -10,7 +10,7 @@ const CloseModal = ({
 	setShowRating,
 }) => {
 	const handleYes = () => {
-		navigation.navigate("Home");
+		navigation.navigate("Entries");
 		setShowRating(true);
 		setModalVisible(false);
 	};

@@ -45,15 +45,18 @@ const AnxietyCategories = ({
 	};
 
 	const stressorsData = [
-		{ stressor: "Work", img: require("../../assets/work.png") },
-		{ stressor: "Finances", img: require("../../assets/finance.png") },
-		{ stressor: "Health", img: require("../../assets/health.png") },
+		{ stressor: "Work", img: require("../../assets/images/work.png") },
+		{ stressor: "Finances", img: require("../../assets/images/finance.png") },
+		{ stressor: "Health", img: require("../../assets/images/health.png") },
 		{
 			stressor: "Relationships",
-			img: require("../../assets/relationship.png"),
+			img: require("../../assets/images/relationship.png"),
 		},
-		{ stressor: "Love", img: require("../../assets/love.png") },
-		{ stressor: "Self-Esteem", img: require("../../assets/selfesteem.png") },
+		{ stressor: "Love", img: require("../../assets/images/love.png") },
+		{
+			stressor: "Self-Esteem",
+			img: require("../../assets/images/selfesteem.png"),
+		},
 	];
 
 	return (

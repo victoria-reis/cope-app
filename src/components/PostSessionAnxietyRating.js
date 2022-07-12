@@ -24,23 +24,29 @@ const PostSessionAnxietyRating = ({ feeling2, setFeeling2, navigation }) => {
 	// };
 
 	const feelingsData = [
-		{ feeling: "Doing Good", img: require("../../assets/good-emoji.png") },
-		{ feeling: "Okay, I Guess", img: require("../../assets/okay-emoji.png") },
+		{
+			feeling: "Doing Good",
+			img: require("../../assets/images/good-emoji.png"),
+		},
+		{
+			feeling: "Okay, I Guess",
+			img: require("../../assets/images/okay-emoji.png"),
+		},
 		{
 			feeling: "Little Tense",
-			img: require("../../assets/littletense-emoji.png"),
+			img: require("../../assets/images/littletense-emoji.png"),
 		},
 		{
 			feeling: "Kinda Stressing",
-			img: require("../../assets/stressing-emoji.png"),
+			img: require("../../assets/images/stressing-emoji.png"),
 		},
 		{
 			feeling: "Overwhelmed",
-			img: require("../../assets/overwhelmed-emoji.png"),
+			img: require("../../assets/images/overwhelmed-emoji.png"),
 		},
 		{
 			feeling: "Freaking Out",
-			img: require("../../assets/freakingout-emoji.png"),
+			img: require("../../assets/images/freakingout-emoji.png"),
 		},
 	];
 
@@ -98,7 +104,7 @@ const PostSessionAnxietyRating = ({ feeling2, setFeeling2, navigation }) => {
 							: null
 					}
 					onPress={() => {
-						navigation.navigate("Home");
+						navigation.navigate("Entries");
 					}}
 				>
 					<ContinueText>Continue</ContinueText>
