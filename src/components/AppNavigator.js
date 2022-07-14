@@ -51,7 +51,12 @@ const AppNavigator = () => {
 				initialRouteName="Onboarding"
 				screenOptions={{
 					headerShown: false,
-					tabBarStyle: { height: 79 },
+					tabBarStyle: {
+						height: 79,
+						marginTop: -25,
+						// padding: -10,
+						// borderTopWidth: 0,
+					},
 					tabBarShowLabel: false,
 				}}
 			>

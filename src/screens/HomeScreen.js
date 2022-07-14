@@ -1,3 +1,4 @@
+// modules
 import React from "react";
 import {
 	SafeAreaView,
@@ -7,8 +8,12 @@ import {
 	View,
 	Image,
 	ImageBackground,
+	FlatList,
 } from "react-native";
 import styled from "styled-components";
+
+// components
+import SessionCard from "../components/SessionCard";
 
 // home screen
 const HomeScreen = ({ navigation }) => {
@@ -21,6 +26,19 @@ const HomeScreen = ({ navigation }) => {
 			/>
 			<Logo source={require("../../assets/images/Cope._logo.png")} />
 			<Motto>"Everything is going to be okay."</Motto>
+			<FlatList
+				data={[
+					{ name: 1 },
+					{ name: 2 },
+					{ name: 3 },
+					{ name: 4 },
+					{ name: 5 },
+					{ name: 6 },
+				]}
+				renderItem={() => <SessionCard />}
+				keyExtractor={(item) => item.name}
+				contentContainerStyle={{ padding: 0, margin: 0 }}
+			/>
 		</ScreenContainer>
 	);
 };
@@ -54,7 +72,7 @@ const Motto = styled(Text)`
 	align-self: center;
 	color: #505050;
 	font-family: OpenSans_400Regular;
-	margin-top: 20px;
+	margin: 20px 0;
 	line-height: 27.24px;
 `;
 
