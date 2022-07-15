@@ -72,7 +72,7 @@ const Motto = styled(Text)`
 	align-self: center;
 	color: #505050;
 	font-family: OpenSans_400Regular;
-	margin: 20px 0;
+	margin: 20px 0 45px;
 	line-height: 27.24px;
 `;
 
