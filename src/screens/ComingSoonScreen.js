@@ -9,22 +9,29 @@ import {
 } from "react-native";
 import styled from "styled-components";
 
-// components
 import SessionCard from "../components/SessionCard";
 
 // previous sessions screen, where user will be able to see list of old sessions
-const SessionsMenuScreen = () => {
+const ComingSoonScreen = () => {
 	return (
 		<ScreenContainer
 			style={Platform.OS ? { marginTop: StatusBar.currentHeight } : null}
 		>
-			<Heading>Entries</Heading>
+			{/* <Heading>Entries</Heading>
 			<FlatList
-				data={[{ name: 1 }, { name: 2 }]}
+				data={[
+					{ name: 1 },
+					{ name: 2 },
+					{ name: 3 },
+					{ name: 4 },
+					{ name: 5 },
+					{ name: 6 },
+				]}
 				renderItem={() => <SessionCard />}
 				keyExtractor={(item) => item.name}
-				// contentContainerStyle={{ padding: 10 }}
-			/>
+				contentContainerStyle={{ padding: 0, margin: 0 }}
+			/> */}
+			<Text>Coming soon!</Text>
 		</ScreenContainer>
 	);
 };
@@ -41,4 +48,4 @@ const Heading = styled(Text)`
 	font-weight: bold;
 `;
 
-export default SessionsMenuScreen;
+export default ComingSoonScreen;

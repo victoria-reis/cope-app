@@ -1,155 +1,206 @@
 // modules
 import React from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { useEffect, useState } from "react";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import styled from "styled-components";
-import {
-	MaterialIcons,
-	FontAwesome,
-	MaterialCommunityIcons,
-	Ionicons,
-} from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
 
 // where user will choose what they are anxious about
-const AnxietyCategories = ({ category, setCategory, setShowCategories }) => {
-	const handlePress = (theme) => {
-		setCategory(theme);
-		setShowCategories(false);
+const AnxietyCategories = ({
+	setStressors,
+	setShowStressors,
+	stressors,
+	setShowVoiceRecording,
+}) => {
+	const [canContinue, setCanContinue] = useState(false);
+	useEffect(() => {
+		isSelected();
+		if (stressors.length > 0) {
+			setCanContinue(true);
+		} else {
+			setCanContinue(false);
+		}
+	}, [stressors]);
+
+	const handleStressorSelection = (currentStressors) => {
+		if (stressors.includes(currentStressors)) {
+			const index = stressors.indexOf(currentStressors);
+			setStressors([
+				...stressors.slice(0, index),
+				...stressors.slice(index + 1),
+			]);
+			// console.log(stressors);
+		} else {
+			setStressors((prevArray) => [...stressors, currentStressors]);
+			// console.log(stressors);
+		}
 	};
+
+	const isSelected = (currentStressor) => {
+		if (stressors.includes(currentStressor)) {
+			return "#f9c45e";
+		} else {
+			return "transparent";
+		}
+	};
+
+	const stressorsData = [
+		{ stressor: "Work", img: require("../../assets/images/work.png") },
+		{ stressor: "Finances", img: require("../../assets/images/finance.png") },
+		{ stressor: "Health", img: require("../../assets/images/health.png") },
+		{
+			stressor: "Relationships",
+			img: require("../../assets/images/relationship.png"),
+		},
+		{ stressor: "Love", img: require("../../assets/images/love.png") },
+		{
+			stressor: "Self-Esteem",
+			img: require("../../assets/images/selfesteem.png"),
+		},
+	];
 
 	return (
 		<>
+			<SkipButton
+				onPress={() => {
+					setShowStressors(false);
+				}}
+			>
+				<SkipText>Skip</SkipText>
+			</SkipButton>
 			<View>
 				<Heading>What are you anxious about currently?</Heading>
 			</View>
-			<CategoriesContainer>
-				<CategoryButton
-					onPress={() => {
-						handlePress("work");
-					}}
-				>
-					<CategoryTitle>Work</CategoryTitle>
-					<CategoryIcon>
-						<MaterialIcons name="work" size={70} color="black" />
-					</CategoryIcon>
-				</CategoryButton>
+			<StressorsContainer>
+				{stressorsData.map((item, index) => {
+					return (
+						<LinearGradient
+							key={index}
+							colors={["#9F91CE", "#7CA3CA"]}
+							style={{
+								width: 120,
+								height: 120,
+								borderRadius: 10,
+							}}
+						>
+							<StressorButton
+								onPress={() => {
+									handleStressorSelection(item.stressor);
+								}}
+								style={{
+									borderWidth: 2,
+									borderColor: isSelected(item.stressor),
+								}}
+							>
+								<StressorTitle>{item.stressor}</StressorTitle>
+								<StressorIcon source={item.img} />
+							</StressorButton>
+						</LinearGradient>
+					);
+				})}
+			</StressorsContainer>
+			<ContinueButtonContainer>
+				<ContinueButton
+					continue={canContinue}
+					disabled={canContinue ? false : true}
+					style={
+						canContinue
+							? {
+									shadowColor: "#000",
+									shadowOffset: {
+										width: 0,
+										height: 2,
+									},
+									shadowOpacity: 0.25,
+									shadowRadius: 4,
 
-				<CategoryButton
+									elevation: 5,
+							  }
+							: null
+					}
 					onPress={() => {
-						handlePress("health");
+						setShowStressors(false);
+						setShowVoiceRecording(true);
 					}}
 				>
-					<CategoryTitle>Health</CategoryTitle>
-					<CategoryIcon>
-						<FontAwesome name="heartbeat" size={70} color="black" />
-					</CategoryIcon>
-				</CategoryButton>
-
-				<CategoryButton
-					onPress={() => {
-						handlePress("sleep");
-					}}
-				>
-					<CategoryTitle>Sleep</CategoryTitle>
-					<CategoryIcon>
-						<MaterialCommunityIcons
-							name="power-sleep"
-							size={70}
-							color="black"
-						/>
-					</CategoryIcon>
-				</CategoryButton>
-
-				<CategoryButton
-					onPress={() => {
-						handlePress("family");
-					}}
-				>
-					<CategoryTitle>Family</CategoryTitle>
-					<CategoryIcon>
-						<MaterialIcons name="family-restroom" size={70} color="black" />
-					</CategoryIcon>
-				</CategoryButton>
-
-				<CategoryButton
-					onPress={() => {
-						handlePress("self love");
-					}}
-				>
-					<CategoryTitle>Self Love</CategoryTitle>
-					<CategoryIcon>
-						<MaterialCommunityIcons
-							name="mother-heart"
-							size={70}
-							color="black"
-						/>
-					</CategoryIcon>
-				</CategoryButton>
-
-				<CategoryButton
-					onPress={() => {
-						handlePress("love");
-					}}
-				>
-					<CategoryTitle>Love</CategoryTitle>
-					<CategoryIcon>
-						<FontAwesome name="heart" size={70} color="black" />
-					</CategoryIcon>
-				</CategoryButton>
-
-				<CategoryButton
-					onPress={() => {
-						handlePress("finances");
-					}}
-				>
-					<CategoryTitle>Finances</CategoryTitle>
-					<CategoryIcon>
-						<MaterialIcons name="attach-money" size={70} color="black" />
-					</CategoryIcon>
-				</CategoryButton>
-
-				<CategoryButton
-					onPress={() => {
-						handlePress("friends");
-					}}
-				>
-					<CategoryTitle>Friends</CategoryTitle>
-					<CategoryIcon>
-						<Ionicons name="people-circle" size={70} color="black" />
-					</CategoryIcon>
-				</CategoryButton>
-			</CategoriesContainer>
+					<ContinueText>Continue</ContinueText>
+				</ContinueButton>
+			</ContinueButtonContainer>
 		</>
 	);
 };
 
 // styles
 const Heading = styled(Text)`
-	font-size: 30px;
-	font-weight: bold;
+	font-size: 28px;
+	font-family: PlayfairDisplay_700Bold;
+	color: #505050;
+	text-align: center;
+	margin-top: 40px;
 `;
 
-const CategoriesContainer = styled(View)`
-	flex: 1;
+const StressorsContainer = styled(View)`
+	flex: 0.75;
+	align-self: center;
 	flex-direction: row;
 	flex-wrap: wrap;
 	justify-content: space-evenly;
-	align-content: center;
+	align-content: space-around;
+	width: 90%;
+	margin-top: 50px;
 `;
 
-const CategoryButton = styled(TouchableOpacity)`
-	width: 35%;
-	background-color: lightgrey;
-	border-radius: 10px;
-	padding: 10px;
+const StressorButton = styled(TouchableOpacity)`
 	align-items: center;
 	flex-direction: column-reverse;
-	margin-bottom: 10px;
+	justify-content: center;
+	width: 120px;
+	height: 120px;
+	border-radius: 10px;
 `;
 
-const CategoryTitle = styled(Text)`
-	font-size: 18px;
+const StressorTitle = styled(Text)`
+	font-size: 14px;
+	font-family: OpenSans_600SemiBold;
+	color: white;
 `;
 
-const CategoryIcon = styled(Text)``;
+const StressorIcon = styled(Image)`
+	margin: 12px;
+`;
+
+const ContinueButton = styled(TouchableOpacity)`
+	border: 1px solid #f9c45e;
+	padding: 8px 15px;
+	border-radius: 5px;
+	background-color: ${(props) => (props.continue ? "#f9c45e" : "transparent")};
+`;
+
+const ContinueText = styled(Text)`
+	color: #505050;
+	font-family: OpenSans_700Bold;
+	font-size: 16px;
+`;
+
+const ContinueButtonContainer = styled(View)`
+	flex: 0.18;
+	align-items: center;
+	justify-content: flex-end;
+`;
+
+const SkipButton = styled(TouchableOpacity)`
+	background-color: #f9f8f8;
+	padding: 3px;
+	width: 60px;
+	align-items: center;
+	align-self: flex-end;
+	border-radius: 60px;
+`;
+
+const SkipText = styled(Text)`
+	color: #bdbdbd;
+	font-family: OpenSans_700Bold;
+	font-size: 12px;
+`;
 
 export default AnxietyCategories;
