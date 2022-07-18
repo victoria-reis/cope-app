@@ -1,5 +1,6 @@
 // modules
 import React from "react";
+import { useState, useEffect } from "react";
 import {
 	SafeAreaView,
 	Text,
@@ -14,13 +15,22 @@ import styled from "styled-components";
 
 // components
 import SessionCard from "../components/SessionCard";
+import DeleteModal from "../components/DeleteModal";
 
 // home screen
 const HomeScreen = ({ navigation }) => {
+	const [modalVisible, setModalVisible] = useState(false);
+
 	return (
 		<ScreenContainer
 			style={Platform.OS ? { marginTop: StatusBar.currentHeight } : null}
 		>
+			{modalVisible ? (
+				<DeleteModal
+					modalVisible={modalVisible}
+					setModalVisible={setModalVisible}
+				/>
+			) : null}
 			<BackgroundImage
 				source={require("../../assets/images/yellow-circle.png")}
 			/>
@@ -35,7 +45,13 @@ const HomeScreen = ({ navigation }) => {
 					{ name: 5 },
 					{ name: 6 },
 				]}
-				renderItem={() => <SessionCard />}
+				renderItem={() => (
+					<SessionCard
+						navigation={navigation}
+						modalVisible={modalVisible}
+						setModalVisible={setModalVisible}
+					/>
+				)}
 				keyExtractor={(item) => item.name}
 				contentContainerStyle={{ padding: 0, margin: 0 }}
 			/>
@@ -54,7 +70,7 @@ const Logo = styled(Image)`
 	height: 45px;
 	width: 79px;
 	align-self: center;
-	margin-top: 90px;
+	margin-top: 80px;
 `;
 
 const BackgroundImage = styled(ImageBackground)`
@@ -72,7 +88,7 @@ const Motto = styled(Text)`
 	align-self: center;
 	color: #505050;
 	font-family: OpenSans_400Regular;
-	margin: 20px 0 45px;
+	margin: 23px 0 44px;
 	line-height: 27.24px;
 `;
 

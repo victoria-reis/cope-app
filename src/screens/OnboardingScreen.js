@@ -139,7 +139,7 @@ const OnboardingScreen = (props) => {
 			</ImageContainer>
 			<ProgressContainer>
 				<Slider
-					style={{ width: 350, height: 50 }}
+					style={{ width: 250, height: 50 }}
 					value={calculateSeekBar()}
 					minimumValue={0}
 					maximumValue={1}
@@ -182,12 +182,12 @@ const OnboardingScreen = (props) => {
 					shadowColor: "#000",
 					shadowOffset: {
 						width: 0,
-						height: 2,
+						height: 4,
 					},
-					shadowOpacity: 0.25,
+					shadowOpacity: 0.15,
 					shadowRadius: 4,
 
-					elevation: 5,
+					elevation: 4,
 				}}
 				onPress={() => {
 					props.navigation.navigate("New Session");
@@ -196,7 +196,7 @@ const OnboardingScreen = (props) => {
 					}
 				}}
 			>
-				<SessionButtonText>Start a Session</SessionButtonText>
+				<SessionButtonText>Start Session</SessionButtonText>
 			</SessionButton>
 		</ScreenContainer>
 	);
@@ -235,7 +235,8 @@ const SkipText = styled(Text)`
 
 const ImageContainer = styled(View)`
 	align-items: center;
-	margin: 70px 0;
+	margin: 90px 0;
+	/* border: 1px solid red; */
 `;
 
 const AudioControlContainer = styled(View)`
@@ -257,13 +258,19 @@ const PlayPauseButton = styled(TouchableOpacity)`
 
 const ProgressContainer = styled(View)`
 	align-items: center;
+	/* border: 1px solid red; */
+	margin-top: -40px;
+	width: 250px;
+	align-self: center;
 `;
 
 const ProgressTextContainer = styled(View)`
 	flex-direction: row;
 	justify-content: space-between;
-	width: 320px;
+	width: 250px;
 	align-self: center;
+	/* border: 1px solid red; */
+	padding: 0 15px;
 `;
 
 const ProgressText = styled(Text)`
@@ -275,13 +282,18 @@ const SessionButton = styled(TouchableOpacity)`
 	background-color: #f9c45e;
 	align-self: center;
 	margin-top: 50px;
-	padding: 10px 20px;
-	border-radius: 10px;
+	width: 132px;
+	height: 32px;
+	/* padding: 10px 20px; */
+	border-radius: 4px;
+	justify-content: center;
 `;
 
 const SessionButtonText = styled(Text)`
 	color: #505050;
-	font-size: 18px;
+	font-size: 16px;
+	font-family: OpenSans_700Bold;
+	text-align: center;
 `;
 
 export default OnboardingScreen;

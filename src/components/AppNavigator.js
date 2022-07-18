@@ -17,6 +17,7 @@ import HomeScreen from "../screens/HomeScreen";
 import ComingSoonScreen from "../screens/ComingSoonScreen";
 import NewSessionScreen from "../screens/NewSessionScreen";
 import OnboardingScreen from "../screens/OnboardingScreen";
+import SessionDetailsScreen from "../screens/SessionDetailsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -109,6 +110,14 @@ const AppNavigator = () => {
 					// options={{
 					// 	tabBarStyle: { display: "none" },
 					// }}
+				/>
+				<Tab.Screen
+					name="Session Details"
+					component={SessionDetailsScreen}
+					options={{
+						tabBarStyle: { display: "none" },
+						tabBarButton: (props) => null,
+					}}
 				/>
 			</Tab.Navigator>
 		</NavigationContainer>

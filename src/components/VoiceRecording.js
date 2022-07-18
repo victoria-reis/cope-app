@@ -246,9 +246,9 @@ const VoiceRecording = ({ navigation, setShowVoiceRecording }) => {
 						shadowColor: "#000",
 						shadowOffset: {
 							width: 0,
-							height: 2,
+							height: 4,
 						},
-						shadowOpacity: 0.25,
+						shadowOpacity: 0.15,
 						shadowRadius: 4,
 
 						elevation: 5,
@@ -303,18 +303,22 @@ const RecordingContainer = styled(View)`
 `;
 
 const ContinueButton = styled(TouchableOpacity)`
-	padding: 8px 15px;
-	border-radius: 5px;
+	/* padding: 8px 15px; */
+	border-radius: 4px;
 	background-color: #f9c45e;
 	align-self: center;
+	justify-content: center;
 	position: absolute;
 	bottom: 30px;
+	width: 97px;
+	height: 32px;
 `;
 
 const ContinueText = styled(Text)`
 	color: #505050;
 	font-family: OpenSans_700Bold;
 	font-size: 16px;
+	text-align: center;
 `;
 
 const DeleteButton = styled(TouchableOpacity)`

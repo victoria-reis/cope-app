@@ -6,7 +6,7 @@ import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 // component that displays info about every old session
-const SessionCard = () => {
+const SessionCard = ({ navigation, modalVisible, setModalVisible }) => {
 	const [deleteButton, setDeleteButton] = useState(false);
 
 	const handleToggle = () => {
@@ -15,6 +15,10 @@ const SessionCard = () => {
 		} else {
 			setDeleteButton(false);
 		}
+	};
+
+	const handleDelete = () => {
+		setModalVisible(true);
 	};
 
 	const data = [
@@ -36,43 +40,15 @@ const SessionCard = () => {
 		},
 	];
 
+	console.log(modalVisible);
+
 	return (
 		<EntryContainer key={data[0].id}>
-			{/* <Date>{data[0].date}</Date>
-			{deleteButton ? (
-				<DeleteButton>
-					<Text style={{ color: "red", fontSize: 18 }}>Delete</Text>
-				</DeleteButton>
-			) : null}
-			<SelectionContainer>
-				<BouncyCheckbox
-					size={25}
-					fillColor="black"
-					unfillColor="#FFFFFF"
-					onPress={handleToggle}
-				/>
-				<EntryInfoContainer>
-					<View style={{ alignItems: "center" }}>
-						<Text style={{ fontSize: 15, fontWeight: "bold" }}>Feeling</Text>
-						<Text style={{ fontSize: 30 }}>{data[0].anxietyRating}</Text>
-					</View>
-					<View style={{ alignItems: "center" }}>
-						<Text style={{ fontSize: 15, fontWeight: "bold" }}>
-							Anxious about:
-						</Text>
-						<Text style={{ fontSize: 20 }}>{data[0].category}</Text>
-					</View>
-					<TouchableOpacity>
-						<Text></Text>
-						<MaterialIcons name="arrow-forward-ios" size={24} color="black" />
-					</TouchableOpacity>
-				</EntryInfoContainer>
-			</SelectionContainer> */}
 			<DateContainer>
 				<Date>{data[0].date.toUpperCase()}</Date>
 				<WeekDay>{data[0].weekday}</WeekDay>
 				{deleteButton ? (
-					<DeleteButton>
+					<DeleteButton onPress={handleDelete}>
 						<DeleteText>Delete</DeleteText>
 					</DeleteButton>
 				) : null}
@@ -86,14 +62,13 @@ const SessionCard = () => {
 			/>
 			<Card
 				style={{
-					shadowColor: "#000",
+					shadowColor: "#BEBBBC",
 					shadowOffset: {
-						width: 5,
-						height: 5,
+						width: 12,
+						height: 12,
 					},
-					shadowOpacity: 0.1,
-					shadowRadius: 10,
-
+					shadowOpacity: 1,
+					shadowRadius: 24,
 					elevation: 5,
 				}}
 				isSelected={deleteButton}
@@ -114,7 +89,7 @@ const SessionCard = () => {
 										width: 0,
 										height: 4,
 									},
-									shadowOpacity: 0.25,
+									shadowOpacity: 0.15,
 									shadowRadius: 4,
 
 									elevation: 5,
@@ -125,7 +100,11 @@ const SessionCard = () => {
 						);
 					})}
 				</StressorsContainer>
-				<OpenEntryButton>
+				<OpenEntryButton
+					onPress={() => {
+						navigation.navigate("Session Details");
+					}}
+				>
 					<SimpleLineIcons name="arrow-right" size={17} color="#F9C45E" />
 				</OpenEntryButton>
 			</Card>
@@ -145,9 +124,7 @@ const EntryContainer = styled(View)`
 `;
 
 const Card = styled(View)`
-	/* margin: 15px 0; */
-	/* border: 1px solid gray; */
-	width: 92%;
+	width: 292px;
 	flex-direction: row;
 	flex-wrap: wrap;
 	/* width: 292px; */
@@ -176,7 +153,7 @@ const Date = styled(Text)`
 	border-radius: 10px;
 	text-align: center;
 	padding-top: 10px;
-	/* margin-left: 18px; */
+	margin-left: 18px;
 `;
 
 const WeekDay = styled(Text)`
@@ -249,20 +226,5 @@ const OpenEntryButton = styled(TouchableOpacity)`
 	position: absolute;
 	/* align-self: flex-end; */
 `;
-
-// const SelectionContainer = styled(View)`
-// 	flex-direction: row;
-// `;
-
-// const EntryInfoContainer = styled(View)`
-// 	background-color: lightgrey;
-// 	flex-direction: row;
-// 	justify-content: space-around;
-// 	/* align-items: center; */
-// 	border-radius: 20px;
-// 	border: 1.5px solid black;
-// 	padding: 15px;
-// 	width: 85%;
-// `;
 
 export default SessionCard;

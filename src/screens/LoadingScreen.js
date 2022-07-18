@@ -22,23 +22,10 @@ const LoadingScreen = () => {
 	return (
 		<LoadingPageContainer>
 			{!welcomeMsgTimer ? (
-				<GradientText
-					style={{
-						fontFamily: "PlayfairDisplay_700Bold",
-						fontSize: 64,
-						textAlign: "center",
-						margin: 45,
-					}}
-				>
-					Cope
-				</GradientText>
+				<LogoContainer>
+					<Logo source={require("../../assets/images/Cope._logo.png")} />
+				</LogoContainer>
 			) : (
-				// <LogoContainer>
-				// 	<Image
-				// 		source={require("../../assets/Cope._logo.png")}
-				// 		style={{ maxWidth: "100%" }}
-				// 	/>
-				// </LogoContainer>
 				<GradientText
 					style={{
 						fontFamily: "PlayfairDisplay_700Bold",
@@ -62,8 +49,11 @@ const LoadingPageContainer = styled(View)`
 	/* border: 2px solid yellow; */
 `;
 
-const LogoContainer = styled(View)`
-	width: 80%;
+const LogoContainer = styled(View)``;
+
+const Logo = styled(Image)`
+	width: 204px;
+	height: 118px;
 `;
 
 export default LoadingScreen;
