@@ -19,16 +19,17 @@ import DeleteModal from "../components/DeleteModal";
 
 // home screen
 const HomeScreen = ({ navigation }) => {
-	const [modalVisible, setModalVisible] = useState(false);
+	// const [modalVisible, setModalVisible] = useState(false);
+	const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 
 	return (
 		<ScreenContainer
 			style={Platform.OS ? { marginTop: StatusBar.currentHeight } : null}
 		>
-			{modalVisible ? (
+			{deleteModalVisible ? (
 				<DeleteModal
-					modalVisible={modalVisible}
-					setModalVisible={setModalVisible}
+					modalVisible={deleteModalVisible}
+					setModalVisible={setDeleteModalVisible}
 				/>
 			) : null}
 			<BackgroundImage
@@ -48,8 +49,8 @@ const HomeScreen = ({ navigation }) => {
 				renderItem={() => (
 					<SessionCard
 						navigation={navigation}
-						modalVisible={modalVisible}
-						setModalVisible={setModalVisible}
+						modalVisible={deleteModalVisible}
+						setModalVisible={setDeleteModalVisible}
 					/>
 				)}
 				keyExtractor={(item) => item.name}

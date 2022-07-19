@@ -17,10 +17,12 @@ import PreSessionAnxietyRating from "../components/PreSessionAnxietyRating";
 import PostSessionAnxietyRating from "../components/PostSessionAnxietyRating";
 import AnxietyCategories from "../components/AnxietyCategories";
 import VoiceRecording from "../components/VoiceRecording";
-import CloseModal from "../components/CloseModal";
+import EscapeSessionModal from "../components/EscapeSessionModal";
 
 // new session screen
 const NewSessionScreen = ({ navigation }) => {
+	const [recording, setRecording] = useState();
+	const [recordings, setRecordings] = useState([]);
 	const [showRating1, setShowRating1] = useState(true);
 	const [showRating2, setShowRating2] = useState(false);
 	const [showStressors, setShowStressors] = useState(false);
@@ -28,7 +30,7 @@ const NewSessionScreen = ({ navigation }) => {
 	const [feeling1, setFeeling1] = useState("");
 	const [feeling2, setFeeling2] = useState("");
 	const [stressors, setStressors] = useState([]);
-	const [modalVisible, setModalVisible] = useState(false);
+	const [escapeModalVisible, setEscapeModalVisible] = useState(false);
 
 	// const handleClose = () => {
 	// 	setModalVisible(true);
@@ -38,9 +40,9 @@ const NewSessionScreen = ({ navigation }) => {
 		<ScreenContainer
 			style={Platform.OS ? { marginTop: StatusBar.currentHeight } : null}
 		>
-			<CloseModal
-				modalVisible={modalVisible}
-				setModalVisible={setModalVisible}
+			<EscapeSessionModal
+				modalVisible={escapeModalVisible}
+				setModalVisible={setEscapeModalVisible}
 				navigation={navigation}
 				setShowRating1={setShowRating1}
 			/>
@@ -53,6 +55,9 @@ const NewSessionScreen = ({ navigation }) => {
 					setFeeling1={setFeeling1}
 					setShowRating1={setShowRating1}
 					setShowStressors={setShowStressors}
+					modalVisible={escapeModalVisible}
+					setModalVisible={setEscapeModalVisible}
+					navigation={navigation}
 				/>
 			) : //here we tried to pass down feeling, setFeeling as props to the AnxietyRating component as props
 
@@ -65,15 +70,27 @@ const NewSessionScreen = ({ navigation }) => {
 					setStressors={setStressors}
 					setShowStressors={setShowStressors}
 					setShowVoiceRecording={setShowVoiceRecording}
+					modalVisible={escapeModalVisible}
+					setModalVisible={setEscapeModalVisible}
 				/>
 			) : // After ruunning the AnxietyCategories we will set shoCategories to false also inside the AnxietyCategories component
 			!showRating1 && !showStressors && showVoiceRecording ? (
 				// where user will record voice
-				<VoiceRecording setShowVoiceRecording={setShowVoiceRecording} />
+				<VoiceRecording
+					setShowVoiceRecording={setShowVoiceRecording}
+					modalVisible={escapeModalVisible}
+					setModalVisible={setEscapeModalVisible}
+					// recording={recording}
+					// setRecording={setRecording}
+					// recordings={recordings}
+					// setRecordings={setRecordings}
+				/>
 			) : !showRating1 && !showStressors && !showVoiceRecording ? (
 				<PostSessionAnxietyRating
 					feeling2={feeling2}
 					setFeeling2={setFeeling2}
+					modalVisible={escapeModalVisible}
+					setModalVisible={setEscapeModalVisible}
 					navigation={navigation}
 				/>
 			) : null}
@@ -86,10 +103,6 @@ const ScreenContainer = styled(SafeAreaView)`
 	flex: 1;
 	margin: 20px;
 	/* background-color: white; */
-`;
-
-const CloseButton = styled(TouchableOpacity)`
-	align-self: flex-end;
 `;
 
 export default NewSessionScreen;

@@ -3,13 +3,10 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { StatusBar } from "expo-status-bar";
 import { Text, View, SafeAreaView } from "react-native";
-// import { NavigationContainer } from "@react-navigation/native";
-// import { createNativeStackNavigator } from "@react-navigation/native-stack";
-// import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-// import { AntDesign } from "@expo/vector-icons";
 import {
 	useFonts as usePlayfair,
 	PlayfairDisplay_700Bold,
+	PlayfairDisplay_600SemiBold,
 } from "@expo-google-fonts/playfair-display";
 import {
 	useFonts as useOpenSans,
@@ -23,8 +20,6 @@ import AppNavigator from "./src/components/AppNavigator";
 
 // screens
 import LoadingScreen from "./src/screens/LoadingScreen";
-// import OnboardingScreen from "./src/screens/OnboardingScreen";
-// import HomeScreen from "./src/screens/HomeScreen";
 
 const App = () => {
 	// state for loading page timer (app name and welcome message)
@@ -39,6 +34,7 @@ const App = () => {
 
 	const [PlayfairLoaded] = usePlayfair({
 		PlayfairDisplay_700Bold,
+		PlayfairDisplay_600SemiBold,
 	});
 	const [OpenSansLoaded] = useOpenSans({
 		OpenSans_400Regular,

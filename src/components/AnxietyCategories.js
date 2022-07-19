@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
+import { AntDesign } from "@expo/vector-icons";
 
 // where user will choose what they are anxious about
 const AnxietyCategories = ({
@@ -11,6 +12,7 @@ const AnxietyCategories = ({
 	setShowStressors,
 	stressors,
 	setShowVoiceRecording,
+	setModalVisible,
 }) => {
 	const [canContinue, setCanContinue] = useState(false);
 	useEffect(() => {
@@ -61,15 +63,15 @@ const AnxietyCategories = ({
 
 	return (
 		<>
-			<SkipButton
+			<EscapeButton
 				onPress={() => {
-					setShowStressors(false);
+					setModalVisible(true);
 				}}
 			>
-				<SkipText>Skip</SkipText>
-			</SkipButton>
+				<AntDesign name="close" size={20} color="#797979" />
+			</EscapeButton>
 			<View>
-				<Heading>What are you anxious about currently?</Heading>
+				<Heading>What are your current stressors?</Heading>
 			</View>
 			<StressorsContainer>
 				{stressorsData.map((item, index) => {
@@ -80,6 +82,7 @@ const AnxietyCategories = ({
 							style={{
 								width: 120,
 								height: 120,
+								marginBottom: 30,
 								borderRadius: 10,
 							}}
 						>
@@ -99,33 +102,30 @@ const AnxietyCategories = ({
 					);
 				})}
 			</StressorsContainer>
-			<ContinueButtonContainer>
-				<ContinueButton
-					continue={canContinue}
-					disabled={canContinue ? false : true}
-					style={
-						canContinue
-							? {
-									shadowColor: "#000",
-									shadowOffset: {
-										width: 0,
-										height: 2,
-									},
-									shadowOpacity: 0.25,
-									shadowRadius: 4,
-
-									elevation: 5,
-							  }
-							: null
-					}
-					onPress={() => {
-						setShowStressors(false);
-						setShowVoiceRecording(true);
-					}}
-				>
-					<ContinueText>Continue</ContinueText>
-				</ContinueButton>
-			</ContinueButtonContainer>
+			<ContinueButton
+				continue={canContinue}
+				disabled={canContinue ? false : true}
+				style={
+					canContinue
+						? {
+								shadowColor: "#000",
+								shadowOffset: {
+									width: 0,
+									height: 4,
+								},
+								shadowOpacity: 0.15,
+								shadowRadius: 4,
+								elevation: 5,
+						  }
+						: null
+				}
+				onPress={() => {
+					setShowStressors(false);
+					setShowVoiceRecording(true);
+				}}
+			>
+				<ContinueText continue={canContinue}>Continue</ContinueText>
+			</ContinueButton>
 		</>
 	);
 };
@@ -133,21 +133,23 @@ const AnxietyCategories = ({
 // styles
 const Heading = styled(Text)`
 	font-size: 28px;
-	font-family: PlayfairDisplay_700Bold;
+	font-family: PlayfairDisplay_600SemiBold;
 	color: #505050;
 	text-align: center;
-	margin-top: 40px;
+	width: 323px;
+	margin-top: 20px;
+	align-self: center;
 `;
 
 const StressorsContainer = styled(View)`
-	flex: 0.75;
 	align-self: center;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content: space-evenly;
+	justify-content: space-between;
 	align-content: space-around;
-	width: 90%;
-	margin-top: 50px;
+	width: 323px;
+	margin-top: 60px;
+	padding: 0 26px;
 `;
 
 const StressorButton = styled(TouchableOpacity)`
@@ -157,6 +159,7 @@ const StressorButton = styled(TouchableOpacity)`
 	width: 120px;
 	height: 120px;
 	border-radius: 10px;
+	margin-bottom: 30px;
 `;
 
 const StressorTitle = styled(Text)`
@@ -171,36 +174,32 @@ const StressorIcon = styled(Image)`
 
 const ContinueButton = styled(TouchableOpacity)`
 	border: 1px solid #f9c45e;
-	padding: 8px 15px;
-	border-radius: 5px;
+	width: 97px;
+	height: 32px;
+	align-items: center;
+	align-self: center;
+	justify-content: center;
+	border-radius: 4px;
 	background-color: ${(props) => (props.continue ? "#f9c45e" : "transparent")};
+	position: absolute;
+	bottom: 60px;
 `;
 
 const ContinueText = styled(Text)`
-	color: #505050;
+	color: ${(props) => (props.continue ? "#505050" : "#bdbdbd")};
 	font-family: OpenSans_700Bold;
 	font-size: 16px;
 `;
 
-const ContinueButtonContainer = styled(View)`
-	flex: 0.18;
+const EscapeButton = styled(TouchableOpacity)`
+	background-color: #e8e8e8;
+	margin-right: 15px;
+	width: 30px;
+	height: 30px;
 	align-items: center;
-	justify-content: flex-end;
-`;
-
-const SkipButton = styled(TouchableOpacity)`
-	background-color: #f9f8f8;
-	padding: 3px;
-	width: 60px;
-	align-items: center;
+	justify-content: center;
 	align-self: flex-end;
 	border-radius: 60px;
-`;
-
-const SkipText = styled(Text)`
-	color: #bdbdbd;
-	font-family: OpenSans_700Bold;
-	font-size: 12px;
 `;
 
 export default AnxietyCategories;

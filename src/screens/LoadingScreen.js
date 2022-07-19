@@ -1,9 +1,8 @@
 // modules
 import React from "react";
 import { useEffect, useState } from "react";
-import { Text, View, Image } from "react-native";
+import { View, Image } from "react-native";
 import styled from "styled-components";
-// import { LinearTextGradient } from "react-native-text-gradient";
 
 // components
 import GradientText from "../components/GradientText";
@@ -29,9 +28,9 @@ const LoadingScreen = () => {
 				<GradientText
 					style={{
 						fontFamily: "PlayfairDisplay_700Bold",
-						fontSize: 40,
+						fontSize: 36,
 						textAlign: "center",
-						margin: 45,
+						width: 254,
 					}}
 				>
 					"Everything is going to be okay."
@@ -46,7 +45,6 @@ const LoadingPageContainer = styled(View)`
 	flex: 1;
 	align-items: center;
 	justify-content: center;
-	/* border: 2px solid yellow; */
 `;
 
 const LogoContainer = styled(View)``;
