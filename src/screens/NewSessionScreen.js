@@ -17,19 +17,27 @@ import PreSessionAnxietyRating from "../components/PreSessionAnxietyRating";
 import PostSessionAnxietyRating from "../components/PostSessionAnxietyRating";
 import AnxietyCategories from "../components/AnxietyCategories";
 import VoiceRecording from "../components/VoiceRecording";
+import Affirmations from "../components/Affirmations";
+import PostSessionMeditation from "../components/PostSessionMeditation";
 import EscapeSessionModal from "../components/EscapeSessionModal";
 
 // new session screen
 const NewSessionScreen = ({ navigation }) => {
-	const [recording, setRecording] = useState();
-	const [recordings, setRecordings] = useState([]);
+	// const [recording, setRecording] = useState();
+	// const [recordings, setRecordings] = useState([]);
 	const [showRating1, setShowRating1] = useState(true);
 	const [showRating2, setShowRating2] = useState(false);
 	const [showStressors, setShowStressors] = useState(false);
 	const [showVoiceRecording, setShowVoiceRecording] = useState(false);
+	const [showAffirmations, setShowAffirmations] = useState(false);
+	const [showMeditation, setShowMeditation] = useState(false);
 	const [feeling1, setFeeling1] = useState("");
 	const [feeling2, setFeeling2] = useState("");
 	const [stressors, setStressors] = useState([]);
+	const [firstAudioEntry, setFirstAudioEntry] = useState({});
+	const [secondAudioEntry, setSecondAudioEntry] = useState({});
+	const [thirdAudioEntry, setThirdAudioEntry] = useState({});
+	const [forthAudioEntry, setForthAudioEntry] = useState({});
 	const [escapeModalVisible, setEscapeModalVisible] = useState(false);
 
 	// const handleClose = () => {
@@ -72,20 +80,34 @@ const NewSessionScreen = ({ navigation }) => {
 					setShowVoiceRecording={setShowVoiceRecording}
 					modalVisible={escapeModalVisible}
 					setModalVisible={setEscapeModalVisible}
+					navigation={navigation}
 				/>
 			) : // After ruunning the AnxietyCategories we will set shoCategories to false also inside the AnxietyCategories component
-			!showRating1 && !showStressors && showVoiceRecording ? (
+			showVoiceRecording ? (
 				// where user will record voice
 				<VoiceRecording
 					setShowVoiceRecording={setShowVoiceRecording}
 					modalVisible={escapeModalVisible}
 					setModalVisible={setEscapeModalVisible}
+					setShowAffirmations={setShowAffirmations}
 					// recording={recording}
 					// setRecording={setRecording}
 					// recordings={recordings}
 					// setRecordings={setRecordings}
 				/>
-			) : !showRating1 && !showStressors && !showVoiceRecording ? (
+			) : showAffirmations ? (
+				<Affirmations
+					setShowAffirmations={setShowAffirmations}
+					setShowMeditation={setShowMeditation}
+					setModalVisible={setEscapeModalVisible}
+					navigation={navigation}
+				/>
+			) : showMeditation ? (
+				<PostSessionMeditation
+					setShowMeditation={setShowMeditation}
+					setModalVisible={setEscapeModalVisible}
+				/>
+			) : (
 				<PostSessionAnxietyRating
 					feeling2={feeling2}
 					setFeeling2={setFeeling2}
@@ -93,7 +115,7 @@ const NewSessionScreen = ({ navigation }) => {
 					setModalVisible={setEscapeModalVisible}
 					navigation={navigation}
 				/>
-			) : null}
+			)}
 		</ScreenContainer>
 	);
 };

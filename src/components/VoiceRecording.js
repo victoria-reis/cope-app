@@ -18,6 +18,7 @@ const VoiceRecording = ({
 	setShowVoiceRecording,
 	setModalVisible,
 	modalVisible,
+	setShowAffirmations,
 	// recording,
 	// setRecording,
 	// recordings,
@@ -242,11 +243,11 @@ const VoiceRecording = ({
 					>
 						<RecordAgainText>Record Again?</RecordAgainText>
 					</RecordAgainButton>
-				) : (
+				) : !recording ? (
 					<SkipButton>
 						<SkipText>Skip</SkipText>
 					</SkipButton>
-				)}
+				) : null}
 			</RecordingContainer>
 			{recordings.length !== 0 ? (
 				<ContinueButton
@@ -265,6 +266,7 @@ const VoiceRecording = ({
 						if (isPlayingPrompt) {
 							voicePromptObj.pauseAsync();
 						}
+						setShowAffirmations(true);
 						setShowVoiceRecording(false);
 					}}
 				>
@@ -358,6 +360,7 @@ const SkipText = styled(Text)`
 	color: #505050;
 	font-size: 16px;
 `;
+
 const PromptAudioButton = styled(TouchableOpacity)`
 	height: 30px;
 	width: 30px;

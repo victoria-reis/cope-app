@@ -3,9 +3,10 @@ import React from "react";
 import { TouchableOpacity, Text, Modal, View } from "react-native";
 import styled from "styled-components";
 
-const EscapeSessionModal = ({ modalVisible, setModalVisible }) => {
+const EscapeSessionModal = ({ modalVisible, setModalVisible, navigation }) => {
 	const handleYes = () => {
 		if (modalVisible) {
+			navigation.navigate("Entries");
 			setModalVisible(false);
 		}
 	};

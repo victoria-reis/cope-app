@@ -65,7 +65,7 @@ const AnxietyCategories = ({
 		<>
 			<EscapeButton
 				onPress={() => {
-					setModalVisible(true);
+					navigation.navigate("Entries");
 				}}
 			>
 				<AntDesign name="close" size={20} color="#797979" />

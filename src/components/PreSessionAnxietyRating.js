@@ -14,6 +14,7 @@ const PreSessionAnxietyRating = ({
 	setShowStressors,
 	modalVisible,
 	setModalVisible,
+	navigation,
 }) => {
 	const [canContinue, setCanContinue] = useState(false);
 
@@ -63,7 +64,7 @@ const PreSessionAnxietyRating = ({
 		<>
 			<EscapeButton
 				onPress={() => {
-					setModalVisible(true);
+					navigation.navigate("Entries");
 				}}
 			>
 				<AntDesign name="close" size={20} color="#797979" />
