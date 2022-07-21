@@ -1,7 +1,7 @@
 // modules
 import React from "react";
-import { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, Image } from "react-native";
+import { useState } from "react";
+import { View, Text, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
@@ -10,7 +10,6 @@ import { Audio } from "expo-av";
 const Affirmations = ({
 	setModalVisible,
 	setShowAffirmations,
-	navigation,
 	setShowMeditation,
 }) => {
 	const [isPlayingPrompt, setIsPlayingPrompt] = useState(false);

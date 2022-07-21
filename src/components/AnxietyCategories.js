@@ -12,7 +12,7 @@ const AnxietyCategories = ({
 	setShowStressors,
 	stressors,
 	setShowVoiceRecording,
-	setModalVisible,
+	navigation,
 }) => {
 	const [canContinue, setCanContinue] = useState(false);
 	useEffect(() => {

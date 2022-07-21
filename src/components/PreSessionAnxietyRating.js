@@ -12,8 +12,6 @@ const PreSessionAnxietyRating = ({
 	setFeeling1,
 	setShowRating1,
 	setShowStressors,
-	modalVisible,
-	setModalVisible,
 	navigation,
 }) => {
 	const [canContinue, setCanContinue] = useState(false);

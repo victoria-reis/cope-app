@@ -11,7 +11,6 @@ const PostSessionAnxietyRating = ({
 	setFeeling2,
 	navigation,
 	setModalVisible,
-	modalVisible,
 }) => {
 	const [canContinue, setCanContinue] = useState(false);
 

@@ -1,15 +1,7 @@
 // modules
 import React from "react";
 import { useState } from "react";
-import {
-	Text,
-	View,
-	SafeAreaView,
-	StatusBar,
-	Platform,
-	TouchableOpacity,
-	Image,
-} from "react-native";
+import { Text, View, TouchableOpacity, Image } from "react-native";
 import styled from "styled-components";
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";

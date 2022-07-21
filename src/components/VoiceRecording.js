@@ -14,35 +14,51 @@ import GradientText from "./GradientText";
 
 // where user will record voice
 const VoiceRecording = ({
-	navigation,
 	setShowVoiceRecording,
 	setModalVisible,
-	modalVisible,
 	setShowAffirmations,
-	// recording,
-	// setRecording,
-	// recordings,
-	// setRecordings,
+	currentVoiceEntry,
+	setCurrentVoiceEntry,
 }) => {
 	const [recording, setRecording] = useState();
-	const [recordings, setRecordings] = useState([]);
 	const [message, setMessage] = useState("");
 	const [isPlayingRecording, setIsPlayingRecording] = useState(false);
 	const [isPlayingPrompt, setIsPlayingPrompt] = useState(false);
 	const [voicePromptObj, setVoicePromptObj] = useState(null);
 	const [voicePromptStatus, setVoicePromptStatus] = useState(null);
+	const [index, setIndex] = useState(0);
+
+	let data = [
+		{
+			question: "What is on your mind?",
+			uri: require("../../assets/audios/what-is-on-your-mind.mp3"),
+			voiceEntry: currentVoiceEntry[0],
+		},
+		{
+			question: "Can you change your thinking?",
+			uri: require("../../assets/audios/can-you-change-your-thinking.mp3"),
+			voiceEntry: currentVoiceEntry[1],
+		},
+		{
+			question: "What could you do differently?",
+			uri: require("../../assets/audios/what-could-you-do-differently.mp3"),
+			voiceEntry: currentVoiceEntry[2],
+		},
+		{
+			question: "What are you grateful for?",
+			uri: require("../../assets/audios/what-are-you-grateful-for.mp3"),
+			voiceEntry: currentVoiceEntry[3],
+		},
+	];
 
 	const handleAudioPlayPause = async () => {
 		console.log("pressing", voicePromptStatus);
 		// playing audio for the first time
 		if (voicePromptStatus === null) {
 			const playbackObject = new Audio.Sound();
-			const status = await playbackObject.loadAsync(
-				require("../../assets/audios/what-is-on-your-mind.mp3"),
-				{
-					shouldPlay: true,
-				}
-			);
+			const status = await playbackObject.loadAsync(data[index].uri, {
+				shouldPlay: true,
+			});
 			setVoicePromptObj(playbackObject);
 			playbackObject.setOnPlaybackStatusUpdate(updatePromptPlaying);
 			console.log("playing", status);
@@ -53,7 +69,7 @@ const VoiceRecording = ({
 		if (
 			voicePromptStatus.isLoaded &&
 			isPlayingPrompt &&
-			voicePromptStatus.positionMillis < 30500
+			voicePromptStatus.positionMillis < voicePromptStatus.durationMillis
 		) {
 			const status = await voicePromptObj.pauseAsync();
 			console.log("pausing");
@@ -64,7 +80,7 @@ const VoiceRecording = ({
 		if (
 			voicePromptStatus.isLoaded &&
 			!isPlayingPrompt &&
-			voicePromptStatus.positionMillis < 30500
+			voicePromptStatus.positionMillis < voicePromptStatus.durationMillis
 		) {
 			const status = await voicePromptObj.playAsync();
 			console.log("resuming");
@@ -75,7 +91,7 @@ const VoiceRecording = ({
 		if (
 			voicePromptStatus.isLoaded &&
 			!isPlayingPrompt &&
-			voicePromptStatus.positionMillis >= 30500
+			voicePromptStatus.positionMillis >= voicePromptStatus.durationMillis
 		) {
 			const status = await voicePromptObj.replayAsync();
 			console.log("replaying");
@@ -85,6 +101,10 @@ const VoiceRecording = ({
 
 	const updatePromptPlaying = (playbackStatus) => {
 		setIsPlayingPrompt(playbackStatus.isPlaying);
+	};
+
+	const updateRecordingPlaying = (playbackStatus) => {
+		setIsPlayingRecording(playbackStatus.isPlaying);
 	};
 
 	const startRecording = async () => {
@@ -117,16 +137,18 @@ const VoiceRecording = ({
 		setRecording(undefined);
 		await recording.stopAndUnloadAsync();
 
-		let updatedRecordings = [...recordings];
 		const { sound, status } = await recording.createNewLoadedSoundAsync();
-		updatedRecordings.push({
-			sound: sound,
-			duration: getDurationFormatted(status.durationMillis),
-			file: recording.getURI(),
-		});
-
-		setRecordings(updatedRecordings);
+		setCurrentVoiceEntry([
+			...currentVoiceEntry,
+			{
+				sound: sound,
+				duration: getDurationFormatted(status.durationMillis),
+				file: recording.getURI(),
+			},
+		]);
 	};
+
+	console.log("DATA", data[index].voiceEntry);
 
 	// const getRecordingLines = () => {
 	// 	return recordings.map((recordingLine, index) => {
@@ -140,35 +162,38 @@ const VoiceRecording = ({
 	// };
 
 	const handleRecording = async () => {
-		if (!recording && recordings.length !== 0) {
-			const status = await recordings[0].sound.getStatusAsync();
+		if (!recording && currentVoiceEntry[index]) {
+			const status = await currentVoiceEntry[index].sound.getStatusAsync();
+			currentVoiceEntry[index].sound.setOnPlaybackStatusUpdate(
+				updateRecordingPlaying
+			);
 			if (
 				status.positionMillis < status.durationMillis &&
 				!isPlayingRecording
 			) {
-				const status = await recordings[0].sound.playAsync();
+				const status = await currentVoiceEntry[index].sound.playAsync();
 				setIsPlayingRecording(true);
 				console.log("playing", status);
 			} else if (
 				status.positionMillis === status.durationMillis &&
 				isPlayingRecording
 			) {
-				const status = await recordings[0].sound.replayAsync();
+				const status = await currentVoiceEntry[index].sound.replayAsync();
 				console.log("replaying", status);
 			} else if (
 				status.positionMillis !== status.durationMillis &&
 				isPlayingRecording
 			) {
-				const status = await recordings[0].sound.pauseAsync();
+				const status = await currentVoiceEntry[index].sound.pauseAsync();
 				setIsPlayingRecording(false);
 				console.log("pausing", status);
 			}
-		} else if (!recording && recordings.length === 0) {
+		} else if (!recording && !data[index].voiceEntry) {
 			startRecording();
 			console.log("start recording");
 		} else if (recording) {
 			stopRecording();
-			console.log("stop recording");
+			console.log("stop recording", data[index].voiceEntry);
 		}
 	};
 
@@ -176,38 +201,74 @@ const VoiceRecording = ({
 		if (isPlayingPrompt) {
 			voicePromptObj.stopAsync();
 		}
-		// setShowVoiceRecording(false);
 		setModalVisible(true);
+	};
+
+	const handleRecordAgain = (index) => {
+		setCurrentVoiceEntry([
+			...currentVoiceEntry.slice(0, index),
+			...currentVoiceEntry.slice(index + 1),
+		]);
+		console.log(currentVoiceEntry);
+		setIsPlayingRecording(false);
+	};
+
+	const handleContinue = () => {
+		if (isPlayingPrompt) {
+			voicePromptObj.pauseAsync();
+		}
+		setVoicePromptStatus(null);
+		if (index < 3) {
+			setIndex(index + 1);
+		} else {
+			setShowAffirmations(true);
+			setShowVoiceRecording(false);
+		}
+	};
+
+	const handleSkip = () => {
+		if (isPlayingPrompt) {
+			voicePromptObj.pauseAsync();
+		}
+		setVoicePromptStatus(null);
+		setCurrentVoiceEntry([...currentVoiceEntry, {}]);
+		if (index < 3) {
+			setIndex(index + 1);
+		} else {
+			setShowAffirmations(true);
+			setShowVoiceRecording(false);
+		}
 	};
 
 	return (
 		<>
-			{!recording && recordings.length === 0 ? (
+			{!recording && !data[index].voiceEntry ? (
 				<EscapeButton onPress={handleEscape}>
 					<AntDesign name="close" size={20} color="#797979" />
 				</EscapeButton>
 			) : null}
-			<View>
-				<Heading recording={recording} recordings={recordings}>
-					What is on your mind?
-				</Heading>
-				{!recording && recordings.length === 0 ? (
-					<LinearGradient
-						colors={["#9F91CE", "#7CA3CA"]}
-						style={{ borderRadius: 50, alignSelf: "center", marginTop: 70 }}
-					>
-						<PromptAudioButton onPress={handleAudioPlayPause}>
-							{!isPlayingPrompt ? (
-								<AntDesign name="caretright" size={16} color="#FFFEFE" />
-							) : (
-								<FontAwesome5 name="pause" size={16} color="#FFFEFE" />
-							)}
-						</PromptAudioButton>
-					</LinearGradient>
-				) : null}
-			</View>
+			<Heading recording={recording} recordings={data[index].voiceEntry}>
+				{data[index].question}
+			</Heading>
+			{!recording && !data[index].voiceEntry ? (
+				<LinearGradient
+					colors={["#9F91CE", "#7CA3CA"]}
+					style={{ borderRadius: 50, alignSelf: "center", marginTop: 70 }}
+				>
+					<PromptAudioButton onPress={handleAudioPlayPause}>
+						{!isPlayingPrompt ? (
+							<AntDesign name="caretright" size={16} color="#FFFEFE" />
+						) : (
+							<FontAwesome5 name="pause" size={16} color="#FFFEFE" />
+						)}
+					</PromptAudioButton>
+				</LinearGradient>
+			) : null}
 			<Text>{message}</Text>
-			<RecordingContainer recording={recording} recordings={recordings}>
+			<RecordingContainer
+				recording={recording}
+				recordings={data[index].voiceEntry}
+			>
 				<LinearGradient
 					colors={["#e0e0e0", "transparent"]}
 					start={{ x: 0, y: 0.05 }}
@@ -216,17 +277,17 @@ const VoiceRecording = ({
 						height: 100,
 						borderRadius: 50,
 						justifyContent: "center",
+						position: "absolute",
+						bottom: -73,
 					}}
 				>
 					<RecordButton status={recording} onPress={handleRecording}>
 						<GradientText>
-							{!recording && recordings.length !== 0 && !isPlayingRecording ? (
+							{!recording && data[index].voiceEntry && !isPlayingRecording ? (
 								<AntDesign name="caretright" size={50} color="black" />
-							) : !recording &&
-							  recordings.length !== 0 &&
-							  isPlayingRecording ? (
+							) : !recording && data[index].voiceEntry && isPlayingRecording ? (
 								<FontAwesome5 name="pause" size={50} color="black" />
-							) : !recording && recordings.length === 0 ? (
+							) : !recording && !data[index].voiceEntry ? (
 								<Entypo name="controller-record" size={70} color="black" />
 							) : recording ? (
 								<FontAwesome name="square" size={50} color="black" />
@@ -234,22 +295,21 @@ const VoiceRecording = ({
 						</GradientText>
 					</RecordButton>
 				</LinearGradient>
-				{!recording && recordings.length !== 0 ? (
+				{!recording && data[index].voiceEntry ? (
 					<RecordAgainButton
 						onPress={() => {
-							setRecordings([]);
-							setIsPlayingRecording(false);
+							handleRecordAgain(index);
 						}}
 					>
 						<RecordAgainText>Record Again?</RecordAgainText>
 					</RecordAgainButton>
 				) : !recording ? (
-					<SkipButton>
+					<SkipButton onPress={handleSkip}>
 						<SkipText>Skip</SkipText>
 					</SkipButton>
 				) : null}
 			</RecordingContainer>
-			{recordings.length !== 0 ? (
+			{data[index].voiceEntry ? (
 				<ContinueButton
 					style={{
 						shadowColor: "#000",
@@ -262,13 +322,7 @@ const VoiceRecording = ({
 
 						elevation: 5,
 					}}
-					onPress={() => {
-						if (isPlayingPrompt) {
-							voicePromptObj.pauseAsync();
-						}
-						setShowAffirmations(true);
-						setShowVoiceRecording(false);
-					}}
+					onPress={handleContinue}
 				>
 					<ContinueText>Continue</ContinueText>
 				</ContinueButton>
@@ -293,7 +347,7 @@ const Heading = styled(Text)`
 	text-align: center;
 	width: 323px;
 	margin-top: ${(props) =>
-		!props.recording && props.recordings.length === 0 ? "20px" : "50px"};
+		!props.recording && !props.recordings ? "20px" : "50px"};
 	align-self: center;
 `;
 
@@ -312,7 +366,7 @@ const RecordingContainer = styled(View)`
 	align-items: center;
 	justify-content: flex-end;
 	margin-top: ${(props) =>
-		!props.recording && props.recordings.length === 0 ? "250px" : "350px"};
+		!props.recording && !props.recordings ? "250px" : "350px"};
 `;
 
 const ContinueButton = styled(TouchableOpacity)`
@@ -342,7 +396,9 @@ const SpeakerContainer = styled(View)`
 `;
 
 const RecordAgainButton = styled(TouchableOpacity)`
-	margin-top: 20px;
+	/* margin-top: 20px; */
+	position: absolute;
+	bottom: -115px;
 `;
 
 const RecordAgainText = styled(Text)`
@@ -352,7 +408,8 @@ const RecordAgainText = styled(Text)`
 `;
 
 const SkipButton = styled(TouchableOpacity)`
-	margin-top: 20px;
+	position: absolute;
+	bottom: -115px;
 `;
 
 const SkipText = styled(Text)`
