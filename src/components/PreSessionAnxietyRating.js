@@ -1,8 +1,10 @@
+// modules
 import React from "react";
 import { useState } from "react";
 import { View, Text, Image, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
+import { AntDesign } from "@expo/vector-icons";
 
 // where user will rate their anxiety
 const PreSessionAnxietyRating = ({
@@ -10,6 +12,7 @@ const PreSessionAnxietyRating = ({
 	setFeeling1,
 	setShowRating1,
 	setShowStressors,
+	navigation,
 }) => {
 	const [canContinue, setCanContinue] = useState(false);
 
@@ -57,8 +60,15 @@ const PreSessionAnxietyRating = ({
 
 	return (
 		<>
+			<EscapeButton
+				onPress={() => {
+					navigation.navigate("Entries");
+				}}
+			>
+				<AntDesign name="close" size={20} color="#797979" />
+			</EscapeButton>
 			<View>
-				<Heading>How anxious are you feeling now?</Heading>
+				<Heading>How are you feeling right now?</Heading>
 			</View>
 			<RatingContainer>
 				{feelingsData.map((item, index) => {
@@ -69,6 +79,7 @@ const PreSessionAnxietyRating = ({
 							style={{
 								width: 120,
 								height: 120,
+								marginBottom: 30,
 								borderRadius: 10,
 							}}
 						>
@@ -89,30 +100,27 @@ const PreSessionAnxietyRating = ({
 					);
 				})}
 			</RatingContainer>
-			<ContinueButtonContainer>
-				<ContinueButton
-					continue={canContinue}
-					disabled={canContinue ? false : true}
-					style={
-						canContinue
-							? {
-									shadowColor: "#000",
-									shadowOffset: {
-										width: 0,
-										height: 2,
-									},
-									shadowOpacity: 0.25,
-									shadowRadius: 4,
-
-									elevation: 5,
-							  }
-							: null
-					}
-					onPress={handleContinue}
-				>
-					<ContinueText>Continue</ContinueText>
-				</ContinueButton>
-			</ContinueButtonContainer>
+			<ContinueButton
+				continue={canContinue}
+				disabled={canContinue ? false : true}
+				style={
+					canContinue
+						? {
+								shadowColor: "#000",
+								shadowOffset: {
+									width: 0,
+									height: 4,
+								},
+								shadowOpacity: 0.15,
+								shadowRadius: 4,
+								elevation: 5,
+						  }
+						: null
+				}
+				onPress={handleContinue}
+			>
+				<ContinueText continue={canContinue}>Continue</ContinueText>
+			</ContinueButton>
 		</>
 	);
 };
@@ -120,21 +128,23 @@ const PreSessionAnxietyRating = ({
 // styles
 const Heading = styled(Text)`
 	font-size: 28px;
-	font-family: PlayfairDisplay_700Bold;
+	font-family: PlayfairDisplay_600SemiBold;
 	color: #505050;
 	text-align: center;
-	margin-top: 60px;
+	width: 323px;
+	margin-top: 20px;
+	align-self: center;
 `;
 
 const RatingContainer = styled(View)`
-	flex: 0.75;
 	align-self: center;
 	flex-direction: row;
 	flex-wrap: wrap;
-	justify-content: space-evenly;
+	justify-content: space-between;
 	align-content: space-around;
-	width: 90%;
-	margin-top: 50px;
+	width: 323px;
+	margin-top: 60px;
+	padding: 0 26px;
 `;
 
 const MoodButton = styled(TouchableOpacity)`
@@ -144,6 +154,7 @@ const MoodButton = styled(TouchableOpacity)`
 	width: 120px;
 	height: 120px;
 	border-radius: 10px;
+	margin-bottom: 30px;
 `;
 
 const MoodTitle = styled(Text)`
@@ -158,21 +169,32 @@ const MoodIcon = styled(Image)`
 
 const ContinueButton = styled(TouchableOpacity)`
 	border: 1px solid #f9c45e;
-	padding: 8px 15px;
-	border-radius: 5px;
+	width: 97px;
+	height: 32px;
+	align-items: center;
+	align-self: center;
+	justify-content: center;
+	border-radius: 4px;
 	background-color: ${(props) => (props.continue ? "#f9c45e" : "transparent")};
+	position: absolute;
+	bottom: 60px;
 `;
 
 const ContinueText = styled(Text)`
-	color: #505050;
+	color: ${(props) => (props.continue ? "#505050" : "#bdbdbd")};
 	font-family: OpenSans_700Bold;
 	font-size: 16px;
 `;
 
-const ContinueButtonContainer = styled(View)`
-	flex: 0.18;
+const EscapeButton = styled(TouchableOpacity)`
+	background-color: #e8e8e8;
+	margin-right: 15px;
+	width: 30px;
+	height: 30px;
 	align-items: center;
-	justify-content: flex-end;
+	justify-content: center;
+	align-self: flex-end;
+	border-radius: 60px;
 `;
 
 export default PreSessionAnxietyRating;

@@ -31,7 +31,7 @@ const ComingSoonScreen = () => {
 				keyExtractor={(item) => item.name}
 				contentContainerStyle={{ padding: 0, margin: 0 }}
 			/> */}
-			<Text>Coming soon!</Text>
+			<Heading>Coming Soon</Heading>
 		</ScreenContainer>
 	);
 };
@@ -43,9 +43,11 @@ const ScreenContainer = styled(SafeAreaView)`
 `;
 
 const Heading = styled(Text)`
-	margin-top: 20px;
-	font-size: 30px;
-	font-weight: bold;
+	font-size: 28px;
+	font-family: PlayfairDisplay_700Bold;
+	color: #505050;
+	text-align: center;
+	margin-top: 60px;
 `;
 
 export default ComingSoonScreen;

@@ -1,34 +1,31 @@
 // modules
 import React from "react";
-import {
-	SafeAreaView,
-	TouchableOpacity,
-	Text,
-	Platform,
-	StatusBar,
-	View,
-} from "react-native";
-import { useState, useEffect } from "react";
+import { SafeAreaView, Platform, StatusBar } from "react-native";
+import { useState } from "react";
 import styled from "styled-components";
-import { AntDesign } from "@expo/vector-icons";
 
 // components
 import PreSessionAnxietyRating from "../components/PreSessionAnxietyRating";
 import PostSessionAnxietyRating from "../components/PostSessionAnxietyRating";
 import AnxietyCategories from "../components/AnxietyCategories";
 import VoiceRecording from "../components/VoiceRecording";
-import CloseModal from "../components/CloseModal";
+import Affirmations from "../components/Affirmations";
+import PostSessionMeditation from "../components/PostSessionMeditation";
+import EscapeSessionModal from "../components/EscapeSessionModal";
 
 // new session screen
 const NewSessionScreen = ({ navigation }) => {
 	const [showRating1, setShowRating1] = useState(true);
-	const [showRating2, setShowRating2] = useState(false);
+	// const [showRating2, setShowRating2] = useState(false);
 	const [showStressors, setShowStressors] = useState(false);
 	const [showVoiceRecording, setShowVoiceRecording] = useState(false);
+	const [showAffirmations, setShowAffirmations] = useState(false);
+	const [showMeditation, setShowMeditation] = useState(false);
 	const [feeling1, setFeeling1] = useState("");
 	const [feeling2, setFeeling2] = useState("");
 	const [stressors, setStressors] = useState([]);
-	const [modalVisible, setModalVisible] = useState(false);
+	const [currentVoiceEntry, setCurrentVoiceEntry] = useState([]);
+	const [escapeModalVisible, setEscapeModalVisible] = useState(false);
 
 	// const handleClose = () => {
 	// 	setModalVisible(true);
@@ -38,11 +35,10 @@ const NewSessionScreen = ({ navigation }) => {
 		<ScreenContainer
 			style={Platform.OS ? { marginTop: StatusBar.currentHeight } : null}
 		>
-			<CloseModal
-				modalVisible={modalVisible}
-				setModalVisible={setModalVisible}
+			<EscapeSessionModal
+				modalVisible={escapeModalVisible}
+				setModalVisible={setEscapeModalVisible}
 				navigation={navigation}
-				setShowRating1={setShowRating1}
 			/>
 			{/* here trying to pass down the state values as props to CloseModal component  */}
 
@@ -53,6 +49,7 @@ const NewSessionScreen = ({ navigation }) => {
 					setFeeling1={setFeeling1}
 					setShowRating1={setShowRating1}
 					setShowStressors={setShowStressors}
+					navigation={navigation}
 				/>
 			) : //here we tried to pass down feeling, setFeeling as props to the AnxietyRating component as props
 
@@ -65,18 +62,37 @@ const NewSessionScreen = ({ navigation }) => {
 					setStressors={setStressors}
 					setShowStressors={setShowStressors}
 					setShowVoiceRecording={setShowVoiceRecording}
+					navigation={navigation}
 				/>
 			) : // After ruunning the AnxietyCategories we will set shoCategories to false also inside the AnxietyCategories component
-			!showRating1 && !showStressors && showVoiceRecording ? (
+			showVoiceRecording ? (
 				// where user will record voice
-				<VoiceRecording setShowVoiceRecording={setShowVoiceRecording} />
-			) : !showRating1 && !showStressors && !showVoiceRecording ? (
+				<VoiceRecording
+					setShowVoiceRecording={setShowVoiceRecording}
+					setModalVisible={setEscapeModalVisible}
+					setShowAffirmations={setShowAffirmations}
+					currentVoiceEntry={currentVoiceEntry}
+					setCurrentVoiceEntry={setCurrentVoiceEntry}
+				/>
+			) : showAffirmations ? (
+				<Affirmations
+					setShowAffirmations={setShowAffirmations}
+					setShowMeditation={setShowMeditation}
+					setModalVisible={setEscapeModalVisible}
+				/>
+			) : showMeditation ? (
+				<PostSessionMeditation
+					setShowMeditation={setShowMeditation}
+					setModalVisible={setEscapeModalVisible}
+				/>
+			) : (
 				<PostSessionAnxietyRating
 					feeling2={feeling2}
 					setFeeling2={setFeeling2}
+					setModalVisible={setEscapeModalVisible}
 					navigation={navigation}
 				/>
-			) : null}
+			)}
 		</ScreenContainer>
 	);
 };
@@ -86,10 +102,6 @@ const ScreenContainer = styled(SafeAreaView)`
 	flex: 1;
 	margin: 20px;
 	/* background-color: white; */
-`;
-
-const CloseButton = styled(TouchableOpacity)`
-	align-self: flex-end;
 `;
 
 export default NewSessionScreen;

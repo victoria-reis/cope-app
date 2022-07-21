@@ -1,13 +1,5 @@
 import React from "react";
-import {
-	Text,
-	View,
-	SafeAreaView,
-	StatusBar,
-	Platform,
-	TouchableOpacity,
-	Image,
-} from "react-native";
+import { View, TouchableOpacity } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
@@ -17,6 +9,7 @@ import HomeScreen from "../screens/HomeScreen";
 import ComingSoonScreen from "../screens/ComingSoonScreen";
 import NewSessionScreen from "../screens/NewSessionScreen";
 import OnboardingScreen from "../screens/OnboardingScreen";
+import SessionDetailsScreen from "../screens/SessionDetailsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -109,6 +102,14 @@ const AppNavigator = () => {
 					// options={{
 					// 	tabBarStyle: { display: "none" },
 					// }}
+				/>
+				<Tab.Screen
+					name="Session Details"
+					component={SessionDetailsScreen}
+					options={{
+						tabBarStyle: { display: "none" },
+						tabBarButton: (props) => null,
+					}}
 				/>
 			</Tab.Navigator>
 		</NavigationContainer>
