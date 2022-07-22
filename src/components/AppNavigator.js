@@ -1,5 +1,5 @@
 import React from "react";
-import { View, TouchableOpacity } from "react-native";
+import { View, TouchableOpacity, Image } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
@@ -47,10 +47,29 @@ const AppNavigator = () => {
 					tabBarStyle: {
 						height: 79,
 						marginTop: -25,
+						// backgroundColor: "transparent",
 						// padding: -10,
 						// borderTopWidth: 0,
 					},
 					tabBarShowLabel: false,
+					tabBarBackground: () => (
+						<LinearGradient
+							colors={["#9F91CE", "#7CA3CA"]}
+							start={{ x: 0, y: 0.2 }}
+						>
+							<View
+								style={{
+									backgroundColor: "transparent",
+									width: "100%",
+									height: "100%",
+								}}
+							></View>
+						</LinearGradient>
+						// <Image
+						// 	source={require("../../assets/images/Subtract.png")}
+						// 	style={{ width: "100%" }}
+						// />
+					),
 				}}
 			>
 				<Tab.Screen
