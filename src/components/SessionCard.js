@@ -5,8 +5,34 @@ import styled from "styled-components";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
+
+const months = [
+	'Jan',
+	'Feb',
+	'Mar',
+	'Apr',
+	'May',
+	'Jun',
+	'Jul',
+	'Aug',
+	'Sep',
+	'Oct',
+	'Nov',
+	'Dec'
+];
+
+const days = [
+	'Sunday',
+	'Monday',
+	'Tuesday',
+	'Wedndesday',
+	'Thursday',
+	'Friday',
+	'Saturday'
+  ]
+
 // component that displays info about every old session
-const SessionCard = ({ navigation, modalVisible, setModalVisible }) => {
+const SessionCard = ({ navigation, modalVisible, setModalVisible, feeling, categories, date, onDelete }) => {
 	const [deleteButton, setDeleteButton] = useState(false);
 
 	const handleToggle = () => {
@@ -17,38 +43,14 @@ const SessionCard = ({ navigation, modalVisible, setModalVisible }) => {
 		}
 	};
 
-	const handleDelete = () => {
-		setModalVisible(true);
-	};
-
-	const data = [
-		{
-			id: 123,
-			date: "22 Jun",
-			weekday: "Friday",
-			anxietyRating1: "Little Tense",
-			anxietyRating2: "Ok, I Guess",
-			stressors: [
-				"Self-Esteem",
-				"Work",
-				"Love",
-				"Health",
-				"Relatioships",
-				"Finance",
-			],
-			voiceEntry: {},
-		},
-	];
-
-	console.log(modalVisible);
-
+	const creationDate = new Date(date);
 	return (
-		<EntryContainer key={data[0].id}>
+		<EntryContainer>
 			<DateContainer>
-				<Date>{data[0].date.toUpperCase()}</Date>
-				<WeekDay>{data[0].weekday}</WeekDay>
+				<DateStyled>{`${creationDate.getDate()} ${months[creationDate.getMonth()]}`}</DateStyled>
+				<WeekDay>{days[creationDate.getDay()]}</WeekDay>
 				{deleteButton ? (
-					<DeleteButton onPress={handleDelete}>
+					<DeleteButton onPress={onDelete}>
 						<DeleteText>Delete</DeleteText>
 					</DeleteButton>
 				) : null}
@@ -77,12 +79,13 @@ const SessionCard = ({ navigation, modalVisible, setModalVisible }) => {
 					<Image
 						source={require("../../assets/images/purple-good-emoji.png")}
 					/>
-					<AnxietyRatingText>{data[0].anxietyRating1}</AnxietyRatingText>
+					<AnxietyRatingText>{feeling}</AnxietyRatingText>
 				</AnxietyRatingContainer>
 				<StressorsContainer>
-					{data[0].stressors.map((singleStressor) => {
+					{categories.map((stressor, index) => {
 						return (
 							<StressorsTag
+								key={`tag-${index}`}
 								style={{
 									shadowColor: "#000",
 									shadowOffset: {
@@ -95,7 +98,7 @@ const SessionCard = ({ navigation, modalVisible, setModalVisible }) => {
 									elevation: 5,
 								}}
 							>
-								{singleStressor}
+								{stressor}
 							</StressorsTag>
 						);
 					})}
@@ -143,7 +146,7 @@ const DateContainer = styled(View)`
 	margin-left: auto;
 `;
 
-const Date = styled(Text)`
+const DateStyled = styled(Text)`
 	font-size: 12px;
 	font-family: OpenSans_400Regular;
 	color: #505050;
