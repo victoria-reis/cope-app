@@ -1,5 +1,5 @@
 // modules
-import React from "react";
+import React, { useCallback } from "react";
 import { useState, useEffect } from "react";
 import {
 	SafeAreaView,
@@ -16,11 +16,34 @@ import styled from "styled-components";
 // components
 import SessionCard from "../components/SessionCard";
 import DeleteModal from "../components/DeleteModal";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // home screen
 const HomeScreen = ({ navigation }) => {
 	// const [modalVisible, setModalVisible] = useState(false);
 	const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+	const [results, setResults] = useState({ data: []});
+	useEffect( () => {
+		async function fetchData() {
+			try {
+				const value = await AsyncStorage.getItem('@results')
+				if(value !== null) {
+					setResults(JSON.parse(value));
+				}
+			} catch(e) {
+				console.log(e);
+			}
+		}
+		fetchData();
+	}, []);
+
+	const onDeleteCard = useCallback((index) => {
+		return () => {
+			results.data = results.data.filter( ( card, i ) => i !== index );
+			setResults(results);
+			AsyncStorage.setItem('@results', JSON.stringify(results));
+		}
+	}, [results]);
 
 	return (
 		<ScreenContainer
@@ -38,19 +61,15 @@ const HomeScreen = ({ navigation }) => {
 			<Logo source={require("../../assets/images/Cope._logo.png")} />
 			<Motto>"Everything is going to be okay."</Motto>
 			<FlatList
-				data={[
-					{ name: 1 },
-					{ name: 2 },
-					{ name: 3 },
-					{ name: 4 },
-					{ name: 5 },
-					{ name: 6 },
-				]}
-				renderItem={() => (
+				data={results.data}
+				renderItem={(item, index) => (
 					<SessionCard
+						key={item.index}
 						navigation={navigation}
 						modalVisible={deleteModalVisible}
 						setModalVisible={setDeleteModalVisible}
+						onDelete={onDeleteCard(item.index)}
+						{...item.item}
 					/>
 				)}
 				keyExtractor={(item) => item.name}

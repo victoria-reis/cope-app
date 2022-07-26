@@ -1,20 +1,58 @@
 // modules
 import React from "react";
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { Audio } from "expo-av";
+import affirmationsLIst from './../../assets/data/affirmations.json';
 
 const Affirmations = ({
 	setModalVisible,
 	setShowAffirmations,
 	setShowMeditation,
+	anxietyCategories = [],
 }) => {
 	const [isPlayingPrompt, setIsPlayingPrompt] = useState(false);
 	const [voicePromptObj, setVoicePromptObj] = useState(null);
 	const [voicePromptStatus, setVoicePromptStatus] = useState(null);
+	const affirmations = useMemo(() => {
+		const results = new Map();
+		const limit = 3;
+
+		while ( results.size < limit ) {
+			const affirmationIndex = Math.floor( Math.random() * (anxietyCategories.length) );
+			const affirmation = anxietyCategories[ affirmationIndex ];
+
+			if (typeof affirmation !== 'string' ) {
+				return [];
+			}
+			const affirmationKey = affirmation.toLowerCase();
+			if ( ! affirmationKey in affirmationsLIst ) {
+				return [];
+			}
+			const values = affirmationsLIst[ affirmationKey ];
+			
+			const valueIndex = Math.floor( Math.random() * values.length );
+			
+			// Avoid to have the same affirmation twice.
+			if (results.has(`${affirmation}_${valueIndex}`) ) {
+				continue;
+			}
+			results.set(`${affirmation}_${valueIndex}`, values[valueIndex]);
+		}
+		
+		const rendered = [];
+		for( let [key, value] of results) {
+			rendered.push((
+				<AffirmationContainer key={key}>
+					<AffirmationText>{value}</AffirmationText>
+				</AffirmationContainer>
+			));
+		}
+		return rendered;
+	}, [anxietyCategories]); 
 
 	const handleAudioPlayPause = async () => {
 		console.log("pressing", voicePromptStatus);
@@ -104,19 +142,7 @@ const Affirmations = ({
 					)}
 				</PromptAudioButton>
 			</LinearGradient>
-			<AffirmationContainer>
-				<AffirmationText>
-					“I attract only healthy relationships”.
-				</AffirmationText>
-			</AffirmationContainer>
-			<AffirmationContainer>
-				<AffirmationText>“I become more lovable every day”.</AffirmationText>
-			</AffirmationContainer>
-			<AffirmationContainer>
-				<AffirmationText>
-					“I know exactly what to do to achieve success”.
-				</AffirmationText>
-			</AffirmationContainer>
+			{affirmations}
 			<MeditationButton
 				onPress={() => {
 					setShowMeditation(true);

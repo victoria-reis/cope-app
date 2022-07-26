@@ -13,6 +13,7 @@ const AnxietyCategories = ({
 	stressors,
 	setShowVoiceRecording,
 	navigation,
+	dispatch
 }) => {
 	const [canContinue, setCanContinue] = useState(false);
 	useEffect(() => {
@@ -22,6 +23,7 @@ const AnxietyCategories = ({
 		} else {
 			setCanContinue(false);
 		}
+		dispatch({type: 'set_anxiety_categories', payload: stressors});
 	}, [stressors]);
 
 	const handleStressorSelection = (currentStressors) => {
