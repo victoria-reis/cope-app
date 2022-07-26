@@ -110,7 +110,10 @@ const OnboardingScreen = (props) => {
 				<IntroText>Let me introduce myself.</IntroText>
 			</TextContainer>
 			<ImageContainer>
-				<Image source={require("../../assets/images/cope-woman.png")} />
+				<Image
+					source={require("../../assets/images/cope-woman.png")}
+					style={{ width: 200, height: 200 }}
+				/>
 			</ImageContainer>
 			<ProgressContainer>
 				<Slider

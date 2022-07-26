@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { LinearGradient } from "expo-linear-gradient";
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { Audio } from "expo-av";
-import affirmationsLIst from './../../assets/data/affirmations.json';
+import affirmationsLIst from "./../../assets/data/affirmations.json";
 
 const Affirmations = ({
 	setModalVisible,
@@ -21,38 +21,40 @@ const Affirmations = ({
 		const results = new Map();
 		const limit = 3;
 
-		while ( results.size < limit ) {
-			const affirmationIndex = Math.floor( Math.random() * (anxietyCategories.length) );
-			const affirmation = anxietyCategories[ affirmationIndex ];
+		while (results.size < limit) {
+			const affirmationIndex = Math.floor(
+				Math.random() * anxietyCategories.length
+			);
+			const affirmation = anxietyCategories[affirmationIndex];
 
-			if (typeof affirmation !== 'string' ) {
+			if (typeof affirmation !== "string") {
 				return [];
 			}
 			const affirmationKey = affirmation.toLowerCase();
-			if ( ! affirmationKey in affirmationsLIst ) {
+			if (!affirmationKey in affirmationsLIst) {
 				return [];
 			}
-			const values = affirmationsLIst[ affirmationKey ];
-			
-			const valueIndex = Math.floor( Math.random() * values.length );
-			
+			const values = affirmationsLIst[affirmationKey];
+
+			const valueIndex = Math.floor(Math.random() * values.length);
+
 			// Avoid to have the same affirmation twice.
-			if (results.has(`${affirmation}_${valueIndex}`) ) {
+			if (results.has(`${affirmation}_${valueIndex}`)) {
 				continue;
 			}
 			results.set(`${affirmation}_${valueIndex}`, values[valueIndex]);
 		}
-		
+
 		const rendered = [];
-		for( let [key, value] of results) {
-			rendered.push((
+		for (let [key, value] of results) {
+			rendered.push(
 				<AffirmationContainer key={key}>
 					<AffirmationText>{value}</AffirmationText>
 				</AffirmationContainer>
-			));
+			);
 		}
 		return rendered;
-	}, [anxietyCategories]); 
+	}, [anxietyCategories]);
 
 	const handleAudioPlayPause = async () => {
 		console.log("pressing", voicePromptStatus);
@@ -193,6 +195,7 @@ const AffirmationContainer = styled(View)`
 	justify-content: center;
 	border: 1px solid #7ca3ca;
 	margin-bottom: 30px;
+	padding: 0 10px;
 `;
 
 const AffirmationText = styled(Text)`

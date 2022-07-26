@@ -165,6 +165,9 @@ const MoodTitle = styled(Text)`
 
 const MoodIcon = styled(Image)`
 	margin: 12px;
+	margin: 12px;
+	width: 60px;
+	height: 60px;
 `;
 
 const ContinueButton = styled(TouchableOpacity)`

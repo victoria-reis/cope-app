@@ -1,15 +1,16 @@
 import React from "react";
-import { View, TouchableOpacity, Image } from "react-native";
+import { View, TouchableOpacity, Image, Text } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { AntDesign } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
+import styled from "styled-components";
 
 import HomeScreen from "../screens/HomeScreen";
 import ComingSoonScreen from "../screens/ComingSoonScreen";
 import NewSessionScreen from "../screens/NewSessionScreen";
 import OnboardingScreen from "../screens/OnboardingScreen";
 import SessionDetailsScreen from "../screens/SessionDetailsScreen";
+import { TouchableWithoutFeedback } from "react-native-web";
 
 const Tab = createBottomTabNavigator();
 
@@ -47,28 +48,20 @@ const AppNavigator = () => {
 					tabBarStyle: {
 						height: 79,
 						marginTop: -25,
+						elevation: 0,
+						borderTopWidth: 0,
+						paddingLeft: 12,
+						paddingRight: 12,
 						// backgroundColor: "transparent",
 						// padding: -10,
 						// borderTopWidth: 0,
 					},
 					tabBarShowLabel: false,
 					tabBarBackground: () => (
-						<LinearGradient
-							colors={["#9F91CE", "#7CA3CA"]}
-							start={{ x: 0, y: 0.2 }}
-						>
-							<View
-								style={{
-									backgroundColor: "transparent",
-									width: "100%",
-									height: "100%",
-								}}
-							></View>
-						</LinearGradient>
-						// <Image
-						// 	source={require("../../assets/images/Subtract.png")}
-						// 	style={{ width: "100%" }}
-						// />
+						<Image
+							source={require("../../assets/images/nav-background.png")}
+							style={{ width: "100%", height: "100%" }}
+						/>
 					),
 				}}
 			>
@@ -84,10 +77,50 @@ const AppNavigator = () => {
 					name="Entries"
 					component={HomeScreen}
 					options={{
-						tabBarIcon: () => <AntDesign name="home" size={25} />,
+						tabBarIcon: ({ focused }) => {
+							return (
+								<TabIconContainer>
+									{focused ? (
+										<TabIcon
+											source={require("../../assets/images/active-entries.png")}
+										/>
+									) : (
+										<TabIcon
+											source={require("../../assets/images/inactive-entries.png")}
+										/>
+									)}
+									<TabTitle style={{ color: focused ? "white" : "#d9d9d9" }}>
+										Entries
+									</TabTitle>
+								</TabIconContainer>
+							);
+						},
 					}}
 				/>
-				<Tab.Screen name="Meditation" component={ComingSoonScreen} />
+				<Tab.Screen
+					name="Meditation"
+					component={ComingSoonScreen}
+					options={{
+						tabBarIcon: ({ focused }) => {
+							return (
+								<TabIconContainer>
+									{focused ? (
+										<TabIcon
+											source={require("../../assets/images/active-meditation.png")}
+										/>
+									) : (
+										<TabIcon
+											source={require("../../assets/images/inactive-meditation.png")}
+										/>
+									)}
+									<TabTitle style={{ color: focused ? "white" : "#d9d9d9" }}>
+										Meditation
+									</TabTitle>
+								</TabIconContainer>
+							);
+						},
+					}}
+				/>
 				{/* <Tab.Screen
 					name="Entries"
 					component={SessionsMenuScreen}
@@ -111,16 +144,50 @@ const AppNavigator = () => {
 				<Tab.Screen
 					name="Insights"
 					component={ComingSoonScreen}
-					// options={{
-					// 	tabBarStyle: { display: "none" },
-					// }}
+					options={{
+						tabBarIcon: ({ focused }) => {
+							return (
+								<TabIconContainer>
+									{focused ? (
+										<TabIcon
+											source={require("../../assets/images/active-insights.png")}
+										/>
+									) : (
+										<TabIcon
+											source={require("../../assets/images/inactive-insights.png")}
+										/>
+									)}
+									<TabTitle style={{ color: focused ? "white" : "#d9d9d9" }}>
+										Insights
+									</TabTitle>
+								</TabIconContainer>
+							);
+						},
+					}}
 				/>
 				<Tab.Screen
 					name="Settings"
 					component={ComingSoonScreen}
-					// options={{
-					// 	tabBarStyle: { display: "none" },
-					// }}
+					options={{
+						tabBarIcon: ({ focused }) => {
+							return (
+								<TabIconContainer>
+									{focused ? (
+										<TabIcon
+											source={require("../../assets/images/active-settings.png")}
+										/>
+									) : (
+										<TabIcon
+											source={require("../../assets/images/inactive-settings.png")}
+										/>
+									)}
+									<TabTitle style={{ color: focused ? "white" : "#d9d9d9" }}>
+										Settings
+									</TabTitle>
+								</TabIconContainer>
+							);
+						},
+					}}
 				/>
 				<Tab.Screen
 					name="Session Details"
@@ -134,5 +201,22 @@ const AppNavigator = () => {
 		</NavigationContainer>
 	);
 };
+
+const TabIconContainer = styled(View)`
+	/* border: 1px solid yellow; */
+	align-items: center;
+`;
+
+const TabIcon = styled(Image)`
+	width: 24px;
+	height: 24px;
+	/* border: 1px solid red; */
+`;
+
+const TabTitle = styled(Text)`
+	font-family: OpenSans_600SemiBold;
+	font-size: 12px;
+	margin-top: 5px;
+`;
 
 export default AppNavigator;

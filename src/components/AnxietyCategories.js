@@ -13,7 +13,7 @@ const AnxietyCategories = ({
 	stressors,
 	setShowVoiceRecording,
 	navigation,
-	dispatch
+	dispatch,
 }) => {
 	const [canContinue, setCanContinue] = useState(false);
 	useEffect(() => {
@@ -23,7 +23,7 @@ const AnxietyCategories = ({
 		} else {
 			setCanContinue(false);
 		}
-		dispatch({type: 'set_anxiety_categories', payload: stressors});
+		dispatch({ type: "set_anxiety_categories", payload: stressors });
 	}, [stressors]);
 
 	const handleStressorSelection = (currentStressors) => {
@@ -98,7 +98,10 @@ const AnxietyCategories = ({
 								}}
 							>
 								<StressorTitle>{item.stressor}</StressorTitle>
-								<StressorIcon source={item.img} />
+								<StressorIcon
+									source={item.img}
+									style={{ width: item.stressor === "Finances" ? 40 : 55 }}
+								/>
 							</StressorButton>
 						</LinearGradient>
 					);
@@ -172,6 +175,8 @@ const StressorTitle = styled(Text)`
 
 const StressorIcon = styled(Image)`
 	margin: 12px;
+	width: 55px;
+	height: 50px;
 `;
 
 const ContinueButton = styled(TouchableOpacity)`

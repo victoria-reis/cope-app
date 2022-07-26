@@ -5,34 +5,41 @@ import styled from "styled-components";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
-
 const months = [
-	'Jan',
-	'Feb',
-	'Mar',
-	'Apr',
-	'May',
-	'Jun',
-	'Jul',
-	'Aug',
-	'Sep',
-	'Oct',
-	'Nov',
-	'Dec'
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
 ];
 
 const days = [
-	'Sunday',
-	'Monday',
-	'Tuesday',
-	'Wedndesday',
-	'Thursday',
-	'Friday',
-	'Saturday'
-  ]
+	"Sunday",
+	"Monday",
+	"Tuesday",
+	"Wedndesday",
+	"Thursday",
+	"Friday",
+	"Saturday",
+];
 
 // component that displays info about every old session
-const SessionCard = ({ navigation, modalVisible, setModalVisible, feeling, categories, date, onDelete }) => {
+const SessionCard = ({
+	navigation,
+	modalVisible,
+	setModalVisible,
+	feeling,
+	categories,
+	date,
+	onDelete,
+}) => {
 	const [deleteButton, setDeleteButton] = useState(false);
 
 	const handleToggle = () => {
@@ -47,7 +54,9 @@ const SessionCard = ({ navigation, modalVisible, setModalVisible, feeling, categ
 	return (
 		<EntryContainer>
 			<DateContainer>
-				<DateStyled>{`${creationDate.getDate()} ${months[creationDate.getMonth()]}`}</DateStyled>
+				<DateStyled>{`${creationDate.getDate()} ${
+					months[creationDate.getMonth()]
+				}`}</DateStyled>
 				<WeekDay>{days[creationDate.getDay()]}</WeekDay>
 				{deleteButton ? (
 					<DeleteButton onPress={onDelete}>
@@ -76,9 +85,29 @@ const SessionCard = ({ navigation, modalVisible, setModalVisible, feeling, categ
 				isSelected={deleteButton}
 			>
 				<AnxietyRatingContainer>
-					<Image
-						source={require("../../assets/images/purple-good-emoji.png")}
-					/>
+					{feeling === "Doing Good" ? (
+						<Icon
+							source={require("../../assets/images/mini-doing-good-emoji.png")}
+						/>
+					) : feeling === "Okay, I Guess" ? (
+						<Icon source={require("../../assets/images/mini-okay-emoji.png")} />
+					) : feeling === "Kinda Stressing" ? (
+						<Icon
+							source={require("../../assets/images/mini-stressing-emoji.png")}
+						/>
+					) : feeling === "Overwhelmed" ? (
+						<Icon
+							source={require("../../assets/images/mini-overwhelmed-emoji.png")}
+						/>
+					) : feeling === "Freaking Out" ? (
+						<Icon
+							source={require("../../assets/images/mini-freaking-out-emoji.png")}
+						/>
+					) : feeling === "Little Tense" ? (
+						<Icon
+							source={require("../../assets/images/mini-little-tense-emoji.png")}
+						/>
+					) : null}
 					<AnxietyRatingText>{feeling}</AnxietyRatingText>
 				</AnxietyRatingContainer>
 				<StressorsContainer>
@@ -127,7 +156,7 @@ const EntryContainer = styled(View)`
 `;
 
 const Card = styled(View)`
-	width: 292px;
+	width: 315px;
 	flex-direction: row;
 	flex-wrap: wrap;
 	/* width: 292px; */
@@ -150,13 +179,14 @@ const DateStyled = styled(Text)`
 	font-size: 12px;
 	font-family: OpenSans_400Regular;
 	color: #505050;
-	width: 35px;
+	width: 32px;
 	height: 55px;
 	border: 1.5px solid #7ca3ca;
 	border-radius: 10px;
 	text-align: center;
-	padding-top: 10px;
-	margin-left: 18px;
+	padding: 10px 2px 0;
+	/* padding-top: 10px; */
+	margin-left: 10px;
 `;
 
 const WeekDay = styled(Text)`
@@ -178,6 +208,7 @@ const AnxietyRatingText = styled(Text)`
 	font-family: OpenSans_600SemiBold;
 	margin-left: 10px;
 	align-self: center;
+	color: #505050;
 `;
 
 const StressorsContainer = styled(View)`
@@ -228,6 +259,11 @@ const OpenEntryButton = styled(TouchableOpacity)`
 	right: 8px;
 	position: absolute;
 	/* align-self: flex-end; */
+`;
+
+const Icon = styled(Image)`
+	width: 25px;
+	height: 25px;
 `;
 
 export default SessionCard;

@@ -119,7 +119,10 @@ const PostSessionMeditation = ({ setShowMeditation, setModalVisible }) => {
 				<Heading>I will guide you through a meditation session.</Heading>
 			</View>
 			<ImageContainer>
-				<Image source={require("../../assets/images/cope-woman.png")} />
+				<Image
+					source={require("../../assets/images/cope-woman.png")}
+					style={{ width: 200, height: 200 }}
+				/>
 			</ImageContainer>
 			<ProgressContainer>
 				<Slider
