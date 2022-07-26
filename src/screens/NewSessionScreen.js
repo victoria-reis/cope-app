@@ -1,7 +1,7 @@
 // modules
-import React from "react";
+import React, { useCallback, useEffect } from "react";
 import { SafeAreaView, Platform, StatusBar } from "react-native";
-import { useState } from "react";
+import { useState, createContext, useReducer } from "react";
 import styled from "styled-components";
 
 // components
@@ -12,6 +12,25 @@ import VoiceRecording from "../components/VoiceRecording";
 import Affirmations from "../components/Affirmations";
 import PostSessionMeditation from "../components/PostSessionMeditation";
 import EscapeSessionModal from "../components/EscapeSessionModal";
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+
+function reducer(state, action){
+	switch(action.type) {
+		case 'set_anxiety_categories': {
+			return {
+				...state,
+				anxietyCategories: action.payload,
+			}
+		}
+		default:
+			return state;
+	}
+}
+
+const initialState = {
+	anxietyCategories: [],
+}
 
 // new session screen
 const NewSessionScreen = ({ navigation }) => {
@@ -26,10 +45,40 @@ const NewSessionScreen = ({ navigation }) => {
 	const [stressors, setStressors] = useState([]);
 	const [currentVoiceEntry, setCurrentVoiceEntry] = useState([]);
 	const [escapeModalVisible, setEscapeModalVisible] = useState(false);
+	const [state, dispatch] = useReducer(reducer, initialState);
 
 	// const handleClose = () => {
 	// 	setModalVisible(true);
 	// };
+
+	useEffect(() => {
+		if ( ! showAffirmations ) {
+			return;
+		}
+
+		async function writeData() {
+			try {
+				let value = await AsyncStorage.getItem('@results')
+				if(value === null) {
+					value = {};
+				} else {
+					value = JSON.parse(value);
+				}
+				const data = 'data' in value ? value['data'] : [];
+				data.push({
+					feeling: feeling1,
+					categories: state.anxietyCategories,
+					date: (new Date()).toISOString(),
+				});
+				value.data = data;
+				await AsyncStorage.setItem('@results', JSON.stringify(value))
+			  } catch(e) {
+				// TODO: Handle error
+				console.log(e);
+			  }
+		}
+		writeData();
+	}, [showAffirmations, state]);
 
 	return (
 		<ScreenContainer
@@ -63,6 +112,7 @@ const NewSessionScreen = ({ navigation }) => {
 					setShowStressors={setShowStressors}
 					setShowVoiceRecording={setShowVoiceRecording}
 					navigation={navigation}
+					dispatch={dispatch}
 				/>
 			) : // After ruunning the AnxietyCategories we will set shoCategories to false also inside the AnxietyCategories component
 			showVoiceRecording ? (
@@ -79,6 +129,7 @@ const NewSessionScreen = ({ navigation }) => {
 					setShowAffirmations={setShowAffirmations}
 					setShowMeditation={setShowMeditation}
 					setModalVisible={setEscapeModalVisible}
+					anxietyCategories={state.anxietyCategories}
 				/>
 			) : showMeditation ? (
 				<PostSessionMeditation
