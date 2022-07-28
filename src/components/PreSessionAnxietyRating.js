@@ -88,7 +88,7 @@ const PreSessionAnxietyRating = ({
 									handleFeelingSelection(item.feeling);
 								}}
 								style={{
-									borderWidth: 2,
+									borderWidth: 3,
 									borderColor:
 										feeling1 === item.feeling ? "#f9c45e" : "transparent",
 								}}

@@ -11,7 +11,6 @@ import {
 	Image,
 } from "react-native";
 import styled from "styled-components";
-import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import Slider from "@react-native-community/slider";
 import { Audio } from "expo-av";
 import { LinearGradient } from "expo-linear-gradient";
@@ -138,10 +137,16 @@ const OnboardingScreen = (props) => {
 						{playbackStatus === null ||
 						!playbackStatus.isPlaying ||
 						playbackPosition > 99500 ? (
-							<AntDesign name="caretright" size={32} color="#FFFEFE" />
+							<Image
+								source={require("../../assets/images/white-play-button.png")}
+								style={{ width: 22, height: 25, marginLeft: 5 }}
+							/>
 						) : (playbackStatus !== null && playbackStatus.isPlaying) ||
 						  playbackPosition < 99500 ? (
-							<FontAwesome5 name="pause" size={32} color="#FFFEFE" />
+							<Image
+								source={require("../../assets/images/white-pause-button.png")}
+								style={{ width: 25, height: 25 }}
+							/>
 						) : null}
 					</PlayPauseButton>
 				</LinearGradient>

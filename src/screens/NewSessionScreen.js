@@ -12,16 +12,15 @@ import VoiceRecording from "../components/VoiceRecording";
 import Affirmations from "../components/Affirmations";
 import PostSessionMeditation from "../components/PostSessionMeditation";
 import EscapeSessionModal from "../components/EscapeSessionModal";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
-
-function reducer(state, action){
-	switch(action.type) {
-		case 'set_anxiety_categories': {
+function reducer(state, action) {
+	switch (action.type) {
+		case "set_anxiety_categories": {
 			return {
 				...state,
 				anxietyCategories: action.payload,
-			}
+			};
 		}
 		default:
 			return state;
@@ -30,7 +29,7 @@ function reducer(state, action){
 
 const initialState = {
 	anxietyCategories: [],
-}
+};
 
 // new session screen
 const NewSessionScreen = ({ navigation }) => {
@@ -52,30 +51,31 @@ const NewSessionScreen = ({ navigation }) => {
 	// };
 
 	useEffect(() => {
-		if ( ! showAffirmations ) {
+		if (!showAffirmations) {
 			return;
 		}
 
 		async function writeData() {
 			try {
-				let value = await AsyncStorage.getItem('@results')
-				if(value === null) {
+				let value = await AsyncStorage.getItem("@results");
+				if (value === null) {
 					value = {};
 				} else {
 					value = JSON.parse(value);
 				}
-				const data = 'data' in value ? value['data'] : [];
+				const data = "data" in value ? value["data"] : [];
 				data.push({
 					feeling: feeling1,
 					categories: state.anxietyCategories,
-					date: (new Date()).toISOString(),
+					date: new Date().toISOString(),
+					voiceEntries: currentVoiceEntry,
 				});
 				value.data = data;
-				await AsyncStorage.setItem('@results', JSON.stringify(value))
-			  } catch(e) {
+				await AsyncStorage.setItem("@results", JSON.stringify(value));
+			} catch (e) {
 				// TODO: Handle error
 				console.log(e);
-			  }
+			}
 		}
 		writeData();
 	}, [showAffirmations, state]);
@@ -140,6 +140,7 @@ const NewSessionScreen = ({ navigation }) => {
 				<PostSessionAnxietyRating
 					feeling2={feeling2}
 					setFeeling2={setFeeling2}
+					setShowRating1={setShowRating1}
 					setModalVisible={setEscapeModalVisible}
 					navigation={navigation}
 				/>

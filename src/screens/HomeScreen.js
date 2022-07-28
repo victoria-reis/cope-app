@@ -12,6 +12,7 @@ import {
 	FlatList,
 } from "react-native";
 import styled from "styled-components";
+import uuid from "react-native-uuid";
 
 // components
 import SessionCard from "../components/SessionCard";
@@ -82,7 +83,8 @@ const HomeScreen = ({ navigation }) => {
 					data={results.data}
 					renderItem={(item, index) => (
 						<SessionCard
-							key={item.index}
+							key={uuid.v4()}
+							inverted={true}
 							navigation={navigation}
 							modalVisible={deleteModalVisible}
 							setModalVisible={setDeleteModalVisible}
@@ -90,8 +92,12 @@ const HomeScreen = ({ navigation }) => {
 							{...item.item}
 						/>
 					)}
-					keyExtractor={(item) => item.name}
-					contentContainerStyle={{ padding: 0, margin: 0 }}
+					keyExtractor={(item, index) => index.toString()}
+					contentContainerStyle={{
+						paddingBottom: 80,
+						margin: 0,
+						justifyContent: "flex-end",
+					}}
 				/>
 			)}
 		</ScreenContainer>
@@ -127,7 +133,7 @@ const Motto = styled(Text)`
 	align-self: center;
 	color: #505050;
 	font-family: OpenSans_400Regular;
-	margin: 23px 0 44px;
+	margin: 23px 0 55px;
 	line-height: 27.24px;
 `;
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { useState } from "react";
-import { View, Text, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity, Image } from "react-native";
 import styled from "styled-components";
 import { Audio } from "expo-av";
 import {
@@ -10,7 +10,6 @@ import {
 	FontAwesome5,
 } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import GradientText from "./GradientText";
 
 // where user will record voice
 const VoiceRecording = ({
@@ -142,7 +141,7 @@ const VoiceRecording = ({
 			...currentVoiceEntry,
 			{
 				sound: sound,
-				duration: getDurationFormatted(status.durationMillis),
+				duration: status.durationMillis,
 				file: recording.getURI(),
 			},
 		]);
@@ -257,9 +256,17 @@ const VoiceRecording = ({
 				>
 					<PromptAudioButton onPress={handleAudioPlayPause}>
 						{!isPlayingPrompt ? (
-							<AntDesign name="caretright" size={16} color="#FFFEFE" />
+							// <AntDesign name="caretright" size={16} color="#FFFEFE" />
+							<Image
+								source={require("../../assets/images/white-play-button.png")}
+								style={{ width: 10, height: 12, marginLeft: 2 }}
+							/>
 						) : (
-							<FontAwesome5 name="pause" size={16} color="#FFFEFE" />
+							// <FontAwesome5 name="pause" size={16} color="#FFFEFE" />
+							<Image
+								source={require("../../assets/images/white-pause-button.png")}
+								style={{ width: 12, height: 12 }}
+							/>
 						)}
 					</PromptAudioButton>
 				</LinearGradient>
@@ -282,17 +289,27 @@ const VoiceRecording = ({
 					}}
 				>
 					<RecordButton status={recording} onPress={handleRecording}>
-						<GradientText>
-							{!recording && data[index].voiceEntry && !isPlayingRecording ? (
-								<AntDesign name="caretright" size={50} color="black" />
-							) : !recording && data[index].voiceEntry && isPlayingRecording ? (
-								<FontAwesome5 name="pause" size={50} color="black" />
-							) : !recording && !data[index].voiceEntry ? (
-								<Entypo name="controller-record" size={70} color="black" />
-							) : recording ? (
-								<FontAwesome name="square" size={50} color="black" />
-							) : null}
-						</GradientText>
+						{!recording && data[index].voiceEntry && !isPlayingRecording ? (
+							<Image
+								source={require("../../assets/images/gradient-play-button.png")}
+								style={{ width: 50, height: 55, marginTop: 5, marginLeft: 12 }}
+							/>
+						) : !recording && data[index].voiceEntry && isPlayingRecording ? (
+							<Image
+								source={require("../../assets/images/gradient-pause-button.png")}
+								style={{ width: 50, height: 50 }}
+							/>
+						) : !recording && !data[index].voiceEntry ? (
+							<Image
+								source={require("../../assets/images/gradient-record-button.png")}
+								style={{ width: 55, height: 60, marginTop: 7 }}
+							/>
+						) : recording ? (
+							<Image
+								source={require("../../assets/images/gradient-stop-recording-button.png")}
+								style={{ width: 50, height: 55, marginTop: 7 }}
+							/>
+						) : null}
 					</RecordButton>
 				</LinearGradient>
 				{!recording && data[index].voiceEntry ? (
@@ -331,14 +348,6 @@ const VoiceRecording = ({
 	);
 };
 
-export const getDurationFormatted = (millis) => {
-	const minutes = millis / 1000 / 60;
-	const minutesDisplay = Math.floor(minutes);
-	const seconds = Math.round((minutes - minutesDisplay) * 60);
-	const secondsDisplay = seconds < 10 ? `0${seconds}` : seconds;
-	return `${minutesDisplay}:${secondsDisplay}`;
-};
-
 // styles
 const Heading = styled(Text)`
 	font-size: 28px;
@@ -359,7 +368,7 @@ const RecordButton = styled(TouchableOpacity)`
 	align-items: center;
 	justify-content: center;
 	border-radius: 50px;
-	border: ${(props) => (props.status ? "3px solid #F9C45E" : "none")};
+	border: ${(props) => (props.status ? "4px solid #F9C45E" : "none")};
 `;
 
 const RecordingContainer = styled(View)`

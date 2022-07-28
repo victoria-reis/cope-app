@@ -38,6 +38,7 @@ const SessionCard = ({
 	feeling,
 	categories,
 	date,
+	voiceEntries,
 	onDelete,
 }) => {
 	const [deleteButton, setDeleteButton] = useState(false);
@@ -51,12 +52,22 @@ const SessionCard = ({
 	};
 
 	const creationDate = new Date(date);
+	const currentDate = new Date();
+
+	console.log(creationDate.getMonth());
 	return (
 		<EntryContainer>
 			<DateContainer>
 				<DateStyled>{`${creationDate.getDate()} ${
 					months[creationDate.getMonth()]
 				}`}</DateStyled>
+				{creationDate.getDate() === currentDate.getDate() ? (
+					<CurrentDate>Today</CurrentDate>
+				) : creationDate.getUTCDate() === currentDate.getUTCDate() - 1 &&
+				  creationDate.getMonth() === currentDate.getMonth() &&
+				  creationDate.getUTCFullYear() === currentDate.getUTCFullYear() ? (
+					<CurrentDate>Yesterday</CurrentDate>
+				) : null}
 				<WeekDay>{days[creationDate.getDay()]}</WeekDay>
 				{deleteButton ? (
 					<DeleteButton onPress={onDelete}>
@@ -134,7 +145,28 @@ const SessionCard = ({
 				</StressorsContainer>
 				<OpenEntryButton
 					onPress={() => {
-						navigation.navigate("Session Details");
+						const longMonths = [
+							"January",
+							"February",
+							"March",
+							"April",
+							"May",
+							"June",
+							"July",
+							"August",
+							"September",
+							"October",
+							"November",
+							"December",
+						];
+						navigation.navigate("Session Details", {
+							date: `${
+								longMonths[creationDate.getMonth()]
+							} ${creationDate.getDate()}, ${creationDate.getFullYear()}`,
+							feeling: feeling,
+							categories: categories,
+							voiceEntries: voiceEntries,
+						});
 					}}
 				>
 					<SimpleLineIcons name="arrow-right" size={17} color="#F9C45E" />
@@ -153,6 +185,15 @@ const EntryContainer = styled(View)`
 	flex-wrap: wrap;
 	margin-bottom: 25px;
 	/* border: 1px solid gray; */
+`;
+
+const CurrentDate = styled(Text)`
+	font-size: 16px;
+	font-family: OpenSans_600SemiBold;
+	color: #505050;
+	position: absolute;
+	left: 50px;
+	margin-top: -2px;
 `;
 
 const Card = styled(View)`
@@ -237,11 +278,13 @@ const DeleteButton = styled(TouchableOpacity)`
 	top: 7px;
 	right: 0; */
 	/* border: 1px solid gray; */
-	height: 45px;
+	/* height: 45px; */
 	height: 20px;
 	justify-items: center;
 	margin-bottom: 8px;
 	margin-left: auto;
+	margin-right: 5px;
+
 	/* justify-content: flex-end; */
 	align-self: flex-end;
 `;

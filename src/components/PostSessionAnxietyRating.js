@@ -11,6 +11,7 @@ const PostSessionAnxietyRating = ({
 	setFeeling2,
 	navigation,
 	setModalVisible,
+	setShowRating1,
 }) => {
 	const [canContinue, setCanContinue] = useState(false);
 
@@ -86,7 +87,7 @@ const PostSessionAnxietyRating = ({
 									handleFeelingSelection(item.feeling);
 								}}
 								style={{
-									borderWidth: 2,
+									borderWidth: 3,
 									borderColor:
 										feeling2 === item.feeling ? "#f9c45e" : "transparent",
 								}}
@@ -117,6 +118,7 @@ const PostSessionAnxietyRating = ({
 				}
 				onPress={() => {
 					navigation.navigate("Entries");
+					setShowRating1(true);
 				}}
 			>
 				<ContinueText continue={canContinue}>Continue</ContinueText>

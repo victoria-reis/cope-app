@@ -93,7 +93,7 @@ const AnxietyCategories = ({
 									handleStressorSelection(item.stressor);
 								}}
 								style={{
-									borderWidth: 2,
+									borderWidth: 3,
 									borderColor: isSelected(item.stressor),
 								}}
 							>
