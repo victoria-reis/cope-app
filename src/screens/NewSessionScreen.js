@@ -34,7 +34,6 @@ const initialState = {
 // new session screen
 const NewSessionScreen = ({ navigation }) => {
 	const [showRating1, setShowRating1] = useState(true);
-	// const [showRating2, setShowRating2] = useState(false);
 	const [showStressors, setShowStressors] = useState(false);
 	const [showVoiceRecording, setShowVoiceRecording] = useState(false);
 	const [showAffirmations, setShowAffirmations] = useState(false);
@@ -45,10 +44,6 @@ const NewSessionScreen = ({ navigation }) => {
 	const [currentVoiceEntry, setCurrentVoiceEntry] = useState([]);
 	const [escapeModalVisible, setEscapeModalVisible] = useState(false);
 	const [state, dispatch] = useReducer(reducer, initialState);
-
-	// const handleClose = () => {
-	// 	setModalVisible(true);
-	// };
 
 	useEffect(() => {
 		if (!showAffirmations) {
@@ -89,7 +84,6 @@ const NewSessionScreen = ({ navigation }) => {
 				setModalVisible={setEscapeModalVisible}
 				navigation={navigation}
 			/>
-			{/* here trying to pass down the state values as props to CloseModal component  */}
 
 			{showRating1 ? (
 				//where user will rate their anxiety
@@ -153,7 +147,6 @@ const NewSessionScreen = ({ navigation }) => {
 const ScreenContainer = styled(SafeAreaView)`
 	flex: 1;
 	margin: 20px;
-	/* background-color: white; */
 `;
 
 export default NewSessionScreen;

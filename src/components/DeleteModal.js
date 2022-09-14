@@ -8,12 +8,8 @@ const DeleteModal = ({
 	setModalVisible,
 	setModalVisibleSession,
 	modalVisibleSession,
-	// navigation,
-	// setShowRating,
 }) => {
 	const handleYes = () => {
-		// navigation.navigate("Entries");
-		// setShowRating(true);
 		if (modalVisible) {
 			setModalVisible(false);
 		} else if (modalVisibleSession) {
@@ -39,19 +35,7 @@ const DeleteModal = ({
 			statusBarTranslucent={true}
 		>
 			<ModalContainer>
-				<ModalBox
-				// style={{
-				// 	shadowColor: "#000",
-				// 	shadowOffset: {
-				// 		width: 0,
-				// 		height: 2,
-				// 	},
-				// 	shadowOpacity: 0.25,
-				// 	shadowRadius: 4,
-
-				// 	elevation: 5,
-				// }}
-				>
+				<ModalBox>
 					<ModalHeading>Do you wish to delete this entry?</ModalHeading>
 					<ModalText>
 						If you delete the session, your entries will be permanently erased.
@@ -75,7 +59,6 @@ const ModalContainer = styled(View)`
 	justify-content: center;
 	align-items: center;
 	margin: 0;
-	/* background-color: rgba(255, 255, 255, 0.2); */
 	background-color: rgba(0, 0, 0, 0.3);
 `;
 
@@ -85,10 +68,6 @@ const ModalBox = styled(View)`
 	height: 200px;
 	border-radius: 10px;
 	padding: 15px;
-	/* background-color: #bdbdbd;
-	width: 65%;
-	padding: 40px 30px 20px;
-	border-radius: 10px; */
 `;
 
 const ButtonsContainer = styled(View)`
@@ -105,12 +84,6 @@ const Button = styled(TouchableOpacity)`
 	border-radius: 4px;
 	border: 1px solid #f9c45e;
 	justify-content: center;
-	/* background-color: #d9d9d9; */
-	/* align-items: center;
-	width: 45%;
-	padding: 10px;
-	border-radius: 5px;
-	margin-top: 10px; */
 `;
 
 const ButtonText = styled(Text)`
@@ -127,8 +100,6 @@ const ModalHeading = styled(Text)`
 	width: 171px;
 	height: 44px;
 	margin-left: 8px;
-	/* font-weight: bold;
-	text-align: center; */
 `;
 
 const ModalText = styled(Text)`
@@ -138,8 +109,6 @@ const ModalText = styled(Text)`
 	width: 177px;
 	height: 48px;
 	margin: 4px 0 0 8px;
-	/* font-weight: bold;
-	text-align: center; */
 `;
 
 export default DeleteModal;

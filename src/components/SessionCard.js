@@ -33,8 +33,6 @@ const days = [
 // component that displays info about every old session
 const SessionCard = ({
 	navigation,
-	modalVisible,
-	setModalVisible,
 	feeling,
 	categories,
 	date,
@@ -54,7 +52,6 @@ const SessionCard = ({
 	const creationDate = new Date(date);
 	const currentDate = new Date();
 
-	console.log(creationDate.getMonth());
 	return (
 		<EntryContainer>
 			<DateContainer>
@@ -180,11 +177,9 @@ const SessionCard = ({
 const EntryContainer = styled(View)`
 	width: 98%;
 	justify-content: center;
-	/* align-self: center; */
 	flex-direction: row;
 	flex-wrap: wrap;
 	margin-bottom: 25px;
-	/* border: 1px solid gray; */
 `;
 
 const CurrentDate = styled(Text)`
@@ -200,7 +195,6 @@ const Card = styled(View)`
 	width: 315px;
 	flex-direction: row;
 	flex-wrap: wrap;
-	/* width: 292px; */
 	padding: 10px;
 	border-radius: 10px;
 	margin-left: -10px;
@@ -209,7 +203,6 @@ const Card = styled(View)`
 `;
 
 const DateContainer = styled(View)`
-	/* border: 1px solid yellow; */
 	flex-direction: row;
 	margin-bottom: 12px;
 	width: 96%;
@@ -226,7 +219,6 @@ const DateStyled = styled(Text)`
 	border-radius: 10px;
 	text-align: center;
 	padding: 10px 2px 0;
-	/* padding-top: 10px; */
 	margin-left: 10px;
 `;
 
@@ -241,7 +233,6 @@ const WeekDay = styled(Text)`
 const AnxietyRatingContainer = styled(View)`
 	flex-direction: row;
 	margin-left: 5px;
-	/* border: 1px solid red; */
 `;
 
 const AnxietyRatingText = styled(Text)`
@@ -253,7 +244,6 @@ const AnxietyRatingText = styled(Text)`
 `;
 
 const StressorsContainer = styled(View)`
-	/* border: 1px solid purple; */
 	flex-direction: row;
 	flex-wrap: wrap;
 	margin-top: 5px;
@@ -270,22 +260,14 @@ const StressorsTag = styled(Text)`
 	padding: 3px 12px;
 	margin: 5px;
 	border-radius: 12px;
-	/* overflow: hidden; */
 `;
 
 const DeleteButton = styled(TouchableOpacity)`
-	/* position: absolute;
-	top: 7px;
-	right: 0; */
-	/* border: 1px solid gray; */
-	/* height: 45px; */
 	height: 20px;
 	justify-items: center;
 	margin-bottom: 8px;
 	margin-left: auto;
 	margin-right: 5px;
-
-	/* justify-content: flex-end; */
 	align-self: flex-end;
 `;
 
@@ -296,12 +278,9 @@ const DeleteText = styled(Text)`
 `;
 
 const OpenEntryButton = styled(TouchableOpacity)`
-	/* border: 1px solid blue; */
-	/* margin-top: 5px; */
 	align-self: center;
 	right: 8px;
 	position: absolute;
-	/* align-self: flex-end; */
 `;
 
 const Icon = styled(Image)`

@@ -10,7 +10,6 @@ import ComingSoonScreen from "../screens/ComingSoonScreen";
 import NewSessionScreen from "../screens/NewSessionScreen";
 import OnboardingScreen from "../screens/OnboardingScreen";
 import SessionDetailsScreen from "../screens/SessionDetailsScreen";
-import { TouchableWithoutFeedback } from "react-native-web";
 
 const Tab = createBottomTabNavigator();
 
@@ -23,7 +22,6 @@ const AppNavigator = () => {
 					top: -40,
 					justifyContent: "center",
 					alignItems: "center",
-					// position: "absolute",
 				}}
 			>
 				<View
@@ -55,9 +53,6 @@ const AppNavigator = () => {
 						position: "absolute",
 						left: 0,
 						bottom: 0,
-						// backgroundColor: "transparent",
-						// padding: -10,
-						// borderTopWidth: 0,
 					},
 					tabBarShowLabel: false,
 					tabBarBackground: () => (
@@ -124,13 +119,6 @@ const AppNavigator = () => {
 						},
 					}}
 				/>
-				{/* <Tab.Screen
-					name="Entries"
-					component={SessionsMenuScreen}
-					options={{
-						tabBarIcon: () => <AntDesign name="profile" size={25} />,
-					}}
-				/> */}
 				<Tab.Screen
 					name="New Session"
 					component={NewSessionScreen}
@@ -206,14 +194,12 @@ const AppNavigator = () => {
 };
 
 const TabIconContainer = styled(View)`
-	/* border: 1px solid yellow; */
 	align-items: center;
 `;
 
 const TabIcon = styled(Image)`
 	width: 24px;
 	height: 24px;
-	/* border: 1px solid red; */
 `;
 
 const TabTitle = styled(Text)`

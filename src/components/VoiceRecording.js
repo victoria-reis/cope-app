@@ -3,12 +3,7 @@ import { useState } from "react";
 import { View, Text, TouchableOpacity, Image } from "react-native";
 import styled from "styled-components";
 import { Audio } from "expo-av";
-import {
-	Entypo,
-	FontAwesome,
-	AntDesign,
-	FontAwesome5,
-} from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
 // where user will record voice
@@ -51,7 +46,6 @@ const VoiceRecording = ({
 	];
 
 	const handleAudioPlayPause = async () => {
-		console.log("pressing", voicePromptStatus);
 		// playing audio for the first time
 		if (voicePromptStatus === null) {
 			const playbackObject = new Audio.Sound();
@@ -60,7 +54,6 @@ const VoiceRecording = ({
 			});
 			setVoicePromptObj(playbackObject);
 			playbackObject.setOnPlaybackStatusUpdate(updatePromptPlaying);
-			console.log("playing", status);
 			return setVoicePromptStatus(status);
 		}
 
@@ -71,7 +64,6 @@ const VoiceRecording = ({
 			voicePromptStatus.positionMillis < voicePromptStatus.durationMillis
 		) {
 			const status = await voicePromptObj.pauseAsync();
-			console.log("pausing");
 			return setVoicePromptStatus(status);
 		}
 
@@ -82,7 +74,6 @@ const VoiceRecording = ({
 			voicePromptStatus.positionMillis < voicePromptStatus.durationMillis
 		) {
 			const status = await voicePromptObj.playAsync();
-			console.log("resuming");
 			return setVoicePromptStatus(status);
 		}
 
@@ -93,7 +84,6 @@ const VoiceRecording = ({
 			voicePromptStatus.positionMillis >= voicePromptStatus.durationMillis
 		) {
 			const status = await voicePromptObj.replayAsync();
-			console.log("replaying");
 			return setVoicePromptStatus(status);
 		}
 	};
@@ -147,19 +137,6 @@ const VoiceRecording = ({
 		]);
 	};
 
-	console.log("DATA", data[index].voiceEntry);
-
-	// const getRecordingLines = () => {
-	// 	return recordings.map((recordingLine, index) => {
-	// 		return (
-	// 			<SpeakerContainer key={index}>
-	// 				<AntDesign name="sound" size={80} color="black" />
-	// 				<Text>{recordingLine.duration}</Text>
-	// 			</SpeakerContainer>
-	// 		);
-	// 	});
-	// };
-
 	const handleRecording = async () => {
 		if (!recording && currentVoiceEntry[index]) {
 			const status = await currentVoiceEntry[index].sound.getStatusAsync();
@@ -172,27 +149,22 @@ const VoiceRecording = ({
 			) {
 				const status = await currentVoiceEntry[index].sound.playAsync();
 				setIsPlayingRecording(true);
-				console.log("playing", status);
 			} else if (
 				status.positionMillis === status.durationMillis &&
 				isPlayingRecording
 			) {
 				const status = await currentVoiceEntry[index].sound.replayAsync();
-				console.log("replaying", status);
 			} else if (
 				status.positionMillis !== status.durationMillis &&
 				isPlayingRecording
 			) {
 				const status = await currentVoiceEntry[index].sound.pauseAsync();
 				setIsPlayingRecording(false);
-				console.log("pausing", status);
 			}
 		} else if (!recording && !data[index].voiceEntry) {
 			startRecording();
-			console.log("start recording");
 		} else if (recording) {
 			stopRecording();
-			console.log("stop recording", data[index].voiceEntry);
 		}
 	};
 
@@ -208,7 +180,6 @@ const VoiceRecording = ({
 			...currentVoiceEntry.slice(0, index),
 			...currentVoiceEntry.slice(index + 1),
 		]);
-		console.log(currentVoiceEntry);
 		setIsPlayingRecording(false);
 	};
 
@@ -256,13 +227,11 @@ const VoiceRecording = ({
 				>
 					<PromptAudioButton onPress={handleAudioPlayPause}>
 						{!isPlayingPrompt ? (
-							// <AntDesign name="caretright" size={16} color="#FFFEFE" />
 							<Image
 								source={require("../../assets/images/white-play-button.png")}
 								style={{ width: 10, height: 12, marginLeft: 2 }}
 							/>
 						) : (
-							// <FontAwesome5 name="pause" size={16} color="#FFFEFE" />
 							<Image
 								source={require("../../assets/images/white-pause-button.png")}
 								style={{ width: 12, height: 12 }}
@@ -405,7 +374,6 @@ const SpeakerContainer = styled(View)`
 `;
 
 const RecordAgainButton = styled(TouchableOpacity)`
-	/* margin-top: 20px; */
 	position: absolute;
 	bottom: -115px;
 `;

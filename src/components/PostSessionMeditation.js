@@ -68,7 +68,6 @@ const PostSessionMeditation = ({ setShowMeditation, setModalVisible }) => {
 			setPlaybackPosition(playbackStatus.positionMillis);
 			setPlaybackDuration(playbackStatus.durationMillis);
 		}
-		// console.log(playbackStatus);
 	};
 
 	// updates seekbar
@@ -98,7 +97,6 @@ const PostSessionMeditation = ({ setShowMeditation, setModalVisible }) => {
 		if (playbackObject) {
 			playbackObject.stopAsync();
 		}
-		// setShowVoiceRecording(false);
 		setModalVisible(true);
 	};
 
@@ -106,7 +104,6 @@ const PostSessionMeditation = ({ setShowMeditation, setModalVisible }) => {
 		if (playbackObject) {
 			playbackObject.stopAsync();
 		}
-		// setShowVoiceRecording(false);
 		setShowMeditation(false);
 	};
 

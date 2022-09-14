@@ -21,14 +21,7 @@ import DeleteModal from "../components/DeleteModal";
 
 const SessionDetailsScreen = ({ route }) => {
 	const [modalVisible, setModalVisible] = useState(false);
-	const [audioStatus, setAudioStatus] = useState(null);
-	const [audioObj, setAudioObj] = useState(null);
-	const [isPlaying, setIsPlaying] = useState(null);
-	const [playbackPosition, setPlaybackPosition] = useState(null);
-	const [playbackDuration, setPlaybackDuration] = useState(null);
 
-	// console.warn(route.params);
-	// const creationDate = new Date(route.params.date);
 	const getDurationFormatted = (millis) => {
 		const minutes = millis / 1000 / 60;
 		const minutesDisplay = Math.floor(minutes);
@@ -38,86 +31,8 @@ const SessionDetailsScreen = ({ route }) => {
 	};
 
 	const handleAudioPlayPause = async (sound, index) => {
-		// console.log("pressing", voicePromptStatus);
-		// playing audio for the first time
-		// const playbackObject = new Audio.Sound();
-		// const status = await playbackObject.loadAsync(
-		// 	require("../../assets/audios/what-could-you-do-differently.mp3"),
-		// 	{
-		// 		shouldPlay: true,
-		// 	}
-		// );
-
-		// console.log(audioStatus.uri);
-		// console.log(sound.file);
-
-		if (audioStatus === null) {
-			// if (audioStatus && audioStatus.uri !== sound.file) {
-			// 	audioObj.stopAsync();
-			// }
-			const playbackObject = new Audio.Sound();
-			const status = await playbackObject.loadAsync(
-				{ uri: sound.file },
-				{
-					shouldPlay: true,
-				}
-			);
-			setAudioObj(playbackObject);
-			playbackObject.setProgressUpdateIntervalAsync(100);
-			playbackObject.setOnPlaybackStatusUpdate(onPlaybackStatusUpdate);
-			console.log("playing");
-			return setAudioStatus(status);
-		}
-
-		if (
-			audioStatus.isLoaded &&
-			isPlaying &&
-			audioStatus.positionMillis < audioStatus.durationMillis
-		) {
-			// pausing audio
-			const status = await audioObj.pauseAsync();
-			console.log("pausing");
-			return setAudioStatus(status);
-		}
-
-		// resuming audio
-		if (
-			audioStatus.isLoaded &&
-			!isPlaying &&
-			audioStatus.positionMillis < audioStatus.durationMillis
-		) {
-			const status = await audioObj.playAsync();
-			console.log("resuming");
-			return setAudioStatus(status);
-		}
-
-		// // replaying audio (not working properly at the moment)
-		if (
-			audioStatus.isLoaded &&
-			!isPlaying &&
-			audioStatus.positionMillis >= audioStatus.durationMillis
-		) {
-			const status = await audioObj.replayAsync();
-			console.log("replaying");
-			return setAudioStatus(status);
-		}
+		console.log("pressing");
 	};
-
-	const onPlaybackStatusUpdate = (playbackStatus) => {
-		if (audioStatus !== null) {
-			setIsPlaying(audioStatus.isPlaying);
-			setPlaybackPosition(audioStatus.positionMillis);
-			setPlaybackDuration(audioStatus.durationMillis);
-		}
-	};
-
-	// const calculateSeekBar = () => {
-	// 	if (playbackPosition !== null && playbackDuration !== null) {
-	// 		return playbackPosition / playbackDuration;
-	// 	} else {
-	// 		return 0;
-	// 	}
-	// };
 
 	return (
 		<ScreenContainer
@@ -139,9 +54,9 @@ const SessionDetailsScreen = ({ route }) => {
 					width: 325,
 					alignSelf: "center",
 				}}
+				showsVerticalScrollIndicator={false}
 			>
 				<Card
-					key={uuid.v4()}
 					style={{
 						shadowColor: "#BEBBBC",
 						shadowOffset: {
@@ -182,7 +97,7 @@ const SessionDetailsScreen = ({ route }) => {
 						<AnxietyRatingText>{route.params.feeling}</AnxietyRatingText>
 					</AnxietyRatingContainer>
 					<StressorsContainer>
-						{route.params.categories.map((stressor, index) => {
+						{route.params.categories.map((stressor) => {
 							return (
 								<StressorsTag
 									key={uuid.v4()}
@@ -207,18 +122,9 @@ const SessionDetailsScreen = ({ route }) => {
 				<Heading2>View Summary</Heading2>
 				{route.params.voiceEntries.map((audio, index) => {
 					if (audio.file) {
-						// if (index === 0) {
-						// 	return <Question><Question>What are you gratful for?</Question></Question>;
-						// } else if (index === 1) {
-						// 	return <Question>Can you change your thinking?</Question>;
-						// } else if (index === 2) {
-						// 	return <Question>What could you do differently?</Question>;
-						// } else if (index === 3) {
-						// 	return <Question>What are you gratful for?</Question>;
-						// }
 						return (
-							<>
-								<Question key={uuid.v4()}>
+							<View key={uuid.v4()}>
+								<Question>
 									{index === 0
 										? "What's on your mind?"
 										: index === 1
@@ -229,7 +135,7 @@ const SessionDetailsScreen = ({ route }) => {
 										? "What are you grateful for?"
 										: null}
 								</Question>
-								<AudioContainer key={uuid.v4()}>
+								<AudioContainer>
 									<LinearGradient
 										colors={["#e0e0e0", "transparent"]}
 										start={{ x: 0, y: 0.05 }}
@@ -242,33 +148,16 @@ const SessionDetailsScreen = ({ route }) => {
 											alignSelf: "center",
 										}}
 									>
-										<PromptAudioButton
+										<AudioButton
 											onPress={() => {
 												handleAudioPlayPause(audio, index);
 											}}
 										>
-											{/* {!isPlayingPrompt ? (
-												// <AntDesign name="caretright" size={16} color="#FFFEFE" />
-												<Image
-													source={require("../../assets/images/white-play-button.png")}
-													style={{ width: 10, height: 12, marginLeft: 2 }}
-												/>
-											) : (
-												// <FontAwesome5 name="pause" size={16} color="#FFFEFE" />
-												<Image
-													source={require("../../assets/images/white-pause-button.png")}
-													style={{ width: 12, height: 12 }}
-												/>
-											)} */}
-											{/* <Image
-												source={require("../../assets/images/gradient-pause-button.png")}
-												style={{ width: 12, height: 12 }}
-											/> */}
 											<Image
 												source={require("../../assets/images/gradient-play-button.png")}
 												style={{ width: 12, height: 12, marginLeft: 2 }}
 											/>
-										</PromptAudioButton>
+										</AudioButton>
 									</LinearGradient>
 									<Slider
 										style={{ width: 175, height: 50 }}
@@ -283,7 +172,7 @@ const SessionDetailsScreen = ({ route }) => {
 										-{getDurationFormatted(audio.duration)}
 									</DurationText>
 								</AudioContainer>
-							</>
+							</View>
 						);
 					}
 				})}
@@ -304,7 +193,6 @@ const Heading1 = styled(Text)`
 	color: #505050;
 	text-align: center;
 	margin-top: 60px;
-	/* border: 1px solid blue; */
 `;
 
 const Heading2 = styled(Text)`
@@ -321,22 +209,16 @@ const Date = styled(Text)`
 	color: #505050;
 	text-align: center;
 	margin-top: 13px;
-	/* border: 1px solid blue; */
 `;
 
 const Question = styled(Text)`
 	font-size: 16px;
 	font-family: OpenSans_400Regular;
 	color: #505050;
-	/* text-align: center; */
-	/* margin-top: 13px; */
 	margin: 20px 0 20px 5px;
-	/* margin-left: 5px; */
-	/* border: 1px solid blue; */
 `;
 
 const OptionsButton = styled(TouchableOpacity)`
-	/* border: 1px solid blue; */
 	margin-top: 9px;
 	width: 90%;
 	align-items: flex-end;
@@ -349,7 +231,6 @@ const Card = styled(View)`
 	flex-wrap: wrap;
 	align-self: center;
 	margin: 5px 0 20px;
-	/* width: 292px; */
 	padding: 10px;
 	border-radius: 10px;
 	background-color: #f2f2f2;
@@ -361,13 +242,7 @@ const AudioContainer = styled(View)`
 	flex-direction: row;
 	border-radius: 10px;
 	padding: 0 10px;
-	/* flex-wrap: wrap; */
 	align-self: center;
-	/* margin: 5px 0 20px; */
-	/* width: 292px; */
-	/* padding: 10px;
-	border-radius: 10px;
-	background-color: #f2f2f2; */
 	border: 1px solid #f9c45e;
 `;
 
@@ -381,7 +256,6 @@ const DurationText = styled(Text)`
 const AnxietyRatingContainer = styled(View)`
 	flex-direction: row;
 	margin-left: 5px;
-	/* border: 1px solid red; */
 `;
 
 const AnxietyRatingText = styled(Text)`
@@ -393,7 +267,6 @@ const AnxietyRatingText = styled(Text)`
 `;
 
 const StressorsContainer = styled(View)`
-	/* border: 1px solid purple; */
 	flex-direction: row;
 	flex-wrap: wrap;
 	margin-top: 5px;
@@ -410,7 +283,6 @@ const StressorsTag = styled(Text)`
 	padding: 3px 12px;
 	margin: 5px;
 	border-radius: 12px;
-	/* overflow: hidden; */
 `;
 
 const Icon = styled(Image)`
@@ -418,11 +290,6 @@ const Icon = styled(Image)`
 	height: 25px;
 `;
 
-const PromptAudioButton = styled(TouchableOpacity)`
-	/* height: 30px;
-	width: 30px;
-	justify-content: center;
-	align-items: center; */
-`;
+const AudioButton = styled(TouchableOpacity)``;
 
 export default SessionDetailsScreen;

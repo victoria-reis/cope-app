@@ -21,7 +21,6 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // home screen
 const HomeScreen = ({ navigation }) => {
-	// const [modalVisible, setModalVisible] = useState(false);
 	const [deleteModalVisible, setDeleteModalVisible] = useState(false);
 	const [results, setResults] = useState({ data: [] });
 	useEffect(() => {
@@ -48,8 +47,6 @@ const HomeScreen = ({ navigation }) => {
 		},
 		[results]
 	);
-
-	console.log(results);
 
 	return (
 		<ScreenContainer
@@ -108,7 +105,6 @@ const HomeScreen = ({ navigation }) => {
 const ScreenContainer = styled(SafeAreaView)`
 	flex: 1;
 	margin: 20px;
-	/* background-color: red; */
 `;
 
 const Logo = styled(Image)`

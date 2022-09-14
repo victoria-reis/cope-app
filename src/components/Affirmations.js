@@ -57,7 +57,6 @@ const Affirmations = ({
 	}, [anxietyCategories]);
 
 	const handleAudioPlayPause = async () => {
-		console.log("pressing", voicePromptStatus);
 		// playing audio for the first time
 		if (voicePromptStatus === null) {
 			const playbackObject = new Audio.Sound();
@@ -69,7 +68,6 @@ const Affirmations = ({
 			);
 			setVoicePromptObj(playbackObject);
 			playbackObject.setOnPlaybackStatusUpdate(updatePromptPlaying);
-			console.log("playing", status);
 			return setVoicePromptStatus(status);
 		}
 
@@ -80,7 +78,6 @@ const Affirmations = ({
 			voicePromptStatus.positionMillis < 48420
 		) {
 			const status = await voicePromptObj.pauseAsync();
-			console.log("pausing");
 			return setVoicePromptStatus(status);
 		}
 
@@ -91,7 +88,6 @@ const Affirmations = ({
 			voicePromptStatus.positionMillis < 48420
 		) {
 			const status = await voicePromptObj.playAsync();
-			console.log("resuming");
 			return setVoicePromptStatus(status);
 		}
 
@@ -102,7 +98,6 @@ const Affirmations = ({
 			voicePromptStatus.positionMillis >= 48420
 		) {
 			const status = await voicePromptObj.replayAsync();
-			console.log("replaying");
 			return setVoicePromptStatus(status);
 		}
 	};
@@ -115,7 +110,6 @@ const Affirmations = ({
 		if (isPlayingPrompt) {
 			voicePromptObj.stopAsync();
 		}
-		// setShowVoiceRecording(false);
 		setModalVisible(true);
 	};
 

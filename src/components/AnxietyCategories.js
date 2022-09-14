@@ -33,10 +33,8 @@ const AnxietyCategories = ({
 				...stressors.slice(0, index),
 				...stressors.slice(index + 1),
 			]);
-			// console.log(stressors);
 		} else {
 			setStressors((prevArray) => [...stressors, currentStressors]);
-			// console.log(stressors);
 		}
 	};
 
